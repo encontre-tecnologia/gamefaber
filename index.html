@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b261b">
+  <title>Fábrica de Lápis</title>
+  <link rel="stylesheet" href="style.css?v=75">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" id="brandLogo" aria-hidden="true">✏️</div>
+      <div>
+        <p class="eyebrow">SIMULAÇÃO NÃO OFICIAL</p>
+        <h1 id="brandName">Fábrica de Lápis</h1>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="level-badge" title="Metas concluídas">
+        <span>Nível da fábrica</span>
+        <strong id="factoryLevel">1</strong>
+      </div>
+      <div class="clock" aria-label="Relógio da fábrica">
+        <span id="dayLabel">Dia 1</span>
+        <strong id="timeLabel">08:00</strong>
+        <div class="day-bar"><div id="dayProgress"></div></div>
+      </div>
+      <button id="newGameBtn" class="ghost">Novo jogo</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats" aria-label="Indicadores da fábrica">
+      <article class="stat-money"><span>💰 Caixa</span><strong id="money">R$ 1.500</strong><small id="moneyDelta">&nbsp;</small></article>
+      <article><span>🪵 Madeira</span><strong id="wood">0</strong><div class="meter"><div id="woodBar"></div></div></article>
+      <article><span>⚫ Grafite</span><strong id="graphite">0</strong><div class="meter"><div id="graphiteBar"></div></div></article>
+      <article><span>🧪 Tinta</span><strong id="paint">0</strong><div class="meter"><div id="paintBar"></div></div></article>
+      <article><span>⭐ Reputação</span><strong id="reputation">70%</strong><div class="meter rep"><div id="repBar"></div></div></article>
+      <article><span>😊 Moral</span><strong id="morale">70</strong><div class="meter rep"><div id="moraleBar"></div></div><small id="moraleLabel">Motivada</small></article>
+      <article><span>✏️ Produzidos</span><strong id="produced">0</strong><small id="rateLabel">0 lápis/h</small></article>
+    </section>
+
+    <section class="control-panel">
+      <div>
+        <h2>Central de controle <span id="managerBadge" class="chip ok" hidden>👔 Gerente no comando</span></h2>
+        <p id="mainMessage">Clique em “Iniciar turno” para abrir a fábrica.</p>
+      </div>
+      <div class="main-actions">
+        <button id="startBtn" class="primary">Iniciar turno</button>
+        <button id="pauseBtn" disabled>Pausar</button>
+        <button id="allOnBtn" disabled title="Liga todas as máquinas que não estão quebradas">Ligar tudo</button>
+        <button id="generatorBtn" class="warn-btn" hidden>⚡ Ligar gerador (R$ 150)</button>
+        <button id="skipNightBtn" class="night-btn" hidden>☀️ Pular a noite</button>
+        <label>Velocidade
+          <select id="speedSelect" aria-label="Velocidade do jogo">
+            <option value="1">Normal</option>
+            <option value="2">Rápida</option>
+            <option value="4">Muito rápida</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="factory-view" aria-label="Fábrica 3D interativa">
+      <div class="factory-toolbar">
+        <div>
+          <p class="eyebrow">FÁBRICA VIVA 3D</p>
+          <h2>Acompanhe a produção</h2>
+        </div>
+        <div class="view-actions">
+          <label class="sector-go">Ir para
+            <select id="sectorSelect" aria-label="Escolher setor"></select>
+          </label>
+          <div class="view-switch" aria-label="Escolha da visualização">
+            <button id="viewAerialBtn" class="active" title="Vista aérea" aria-label="Vista aérea">Vista aérea</button>
+            <button id="viewInteriorBtn" title="Entrar na fábrica" aria-label="Entrar na fábrica">Entrar na fábrica</button>
+          </div>
+          <button id="walkBtn" class="walk-btn" title="Controle o gerente e ande pela fábrica" aria-label="Andar pela fábrica">🚶 Andar pela fábrica</button>
+          <button id="resetCameraBtn" title="Centralizar câmera" aria-label="Centralizar câmera">Centralizar câmera</button>
+        </div>
+      </div>
+      <div id="factory3d" class="factory-canvas">
+        <div id="webglFallback" class="webgl-fallback" hidden>O navegador não conseguiu abrir a fábrica 3D. Atualize o Chrome ou ative a aceleração de hardware.</div>
+        <div class="scene-legend"><span><i class="dot green"></i>funcionando</span><span><i class="dot yellow"></i>conserto</span><span><i class="dot red"></i>defeito</span></div>
+        <div id="cameraHelp" class="camera-help">Arraste para girar • Role para aproximar • Clique no galpão central para entrar</div>
+        <div id="sceneStatus" class="scene-status">Fábrica aguardando o início do turno</div>
+      </div>
+    </section>
+
+    <div id="focusBar" class="focus-bar" hidden><span id="focusText"></span><button type="button" id="focusAll">Mostrar tudo</button></div>
+    <div class="game-grid">
+      <div class="col-main">
+        <section>
+          <div class="section-title">
+            <h2>Linha de produção</h2>
+            <div class="line-info">
+              <span id="bottleneck" class="chip warn" hidden></span>
+              <span id="lineStatus" class="status waiting">Aguardando</span>
+            </div>
+          </div>
+          <section class="prod-board" id="prodBoard" data-state="idle" aria-label="Painel da produção">
+            <div class="pb-head">
+              <div><p class="eyebrow">PAINEL DA PRODUÇÃO</p><h3 id="pbTitle">Turno não iniciado</h3></div>
+              <span id="pbClock" class="pb-clock">Dia 1 · 08:00</span>
+            </div>
+            <div class="pb-kpis">
+              <div class="pb-kpi"><span>Ritmo agora</span><strong id="pbRate">0</strong><small id="pbRateMax">lápis/h</small></div>
+              <div class="pb-kpi"><span>Produzidos hoje</span><strong id="pbToday">0</strong><small>lápis</small></div>
+              <div class="pb-kpi"><span>Gargalo</span><strong id="pbBn">—</strong><small id="pbBnRate"></small></div>
+              <div class="pb-kpi wide"><span>Pedido atual</span><strong id="pbOrder">—</strong><small id="pbOrderName">sem pedido</small><div class="pb-bar"><div id="pbOrderBar"></div></div></div>
+              <div class="pb-kpi"><span>Vapor</span><strong id="pbSteam">apagada</strong><small id="pbSteamInfo"></small><div class="pb-bar"><div id="pbSteamBar"></div></div></div>
+            </div>
+            <ol id="pbFlow" class="pb-flow" aria-label="Estado de cada etapa da linha"></ol>
+          </section>
+          <details class="fold" id="foldLine">
+            <summary><span class="fold-title">⚙️ Máquinas e caldeira</span><span id="foldLineSum" class="fold-sum"></span><span class="fold-hint"><span class="fh-open">ver detalhes</span><span class="fh-close">recolher</span></span></summary>
+            <div id="stations" class="stations"></div>
+            <div id="boiler" class="boiler-card"></div>
+            <div id="lines" class="lines-card"></div>
+          </details>
+        </section>
+
+        <section class="panel manage">
+          <div class="tabs" role="tablist">
+            <button role="tab" data-tab="market" class="active">🛒 Mercado</button>
+            <button role="tab" data-tab="staff">👥 Equipe</button>
+            <button role="tab" data-tab="goals">🏆 Metas <span id="goalsBadge" class="badge">0/0</span></button>
+            <button role="tab" data-tab="report">📊 Relatório</button>
+            <button role="tab" data-tab="dir">🏢 Diretoria</button>
+            <button role="tab" data-tab="shop">🛍️ Loja & Feiras</button>
+            <button role="tab" data-tab="people">🎉 Clube & Auditório</button>
+            <button role="tab" data-tab="brand">🏷️ Marca</button>
+            <button role="tab" data-tab="cores">🎨 Cores</button>
+          </div>
+          <div id="tab-market" class="tab-body">
+            <p class="hint">Os preços mudam a cada dia. Cada lápis consome madeira, grafite e tinta — a quantidade depende do tipo de pedido.</p>
+            <div id="market" class="market"></div>
+            <div id="warehouse" class="warehouse"></div>
+          </div>
+          <div id="tab-staff" class="tab-body" hidden>
+            <p class="hint">Salários são pagos no fim de cada dia de trabalho.</p>
+            <div class="workdays" id="workdays"><b>🗓️ Jornada</b> <span id="todayLabel"></span>
+              <label><input type="checkbox" data-workday="sat"> Trabalha aos sábados</label>
+              <label><input type="checkbox" data-workday="sun"> Trabalha aos domingos</label>
+              <small>Nos dias de folga a fábrica fica fechada e não paga salários nem custos fixos. Trabalhar no fim de semana cansa a equipe (−3 de moral por dia).</small>
+            </div>
+            <div id="staff" class="staff-list"></div>
+          </div>
+          <div id="tab-goals" class="tab-body" hidden>
+            <p class="hint">Cada meta concluída sobe o nível da fábrica e paga um bônus em dinheiro.</p>
+            <ol id="goals" class="goals"></ol>
+          </div>
+          <div id="tab-report" class="tab-body" hidden>
+            <div id="report" class="report"></div>
+          </div>
+          <div id="tab-dir" class="tab-body" hidden>
+            <div class="ceo-card">
+              <div id="ceoPreview" class="ceo-photo"><span>🧑‍💼</span></div>
+              <div class="ceo-fields">
+                <h3>Sua sala de CEO</h3>
+                <label for="ceoNameInput">Seu nome na placa
+                  <input id="ceoNameInput" type="text" maxlength="30" placeholder="Ex.: Guilherme" autocomplete="off">
+                </label>
+                <div class="brand-buttons">
+                  <label class="file-btn primary">🖼️ Colocar foto no quadro<input id="ceoPhotoInput" type="file" accept="image/*" hidden></label>
+                  <button id="ceoRemovePhoto" type="button" hidden>Tirar foto</button>
+                  <button data-act="viewadmin" type="button" class="ghost-dark">👀 Ver a administração</button>
+                </div>
+                <small id="ceoTrophies"></small>
+              </div>
+            </div>
+            <div class="meet-card">
+              <div><h3>🤝 Sala de reunião</h3><p>Convoque a equipe da administração e apresente no telão da sala.</p></div>
+              <div class="meet-actions">
+                <button data-act="meet" data-src="report" class="primary">📊 Apresentar resultados</button>
+                <button data-act="meet" data-src="slides">🖼️ Apresentar imagens</button>
+                <button data-act="meet" data-src="screen">🖥️ Compartilhar minha tela</button>
+                <input id="meetFiles" type="file" accept="image/*" multiple hidden>
+              </div>
+              <small>A tela ao vivo funciona abrindo o jogo pelo PC (INICIAR-JOGO.bat). Para slides, exporte como imagens (PNG/JPG) e escolha várias de uma vez.</small>
+            </div>
+            <div id="dirBuffs" class="buffs dir-buffs"></div>
+            <div id="depts" class="depts"></div>
+            <h4 class="people-h small">Candidatos do processo seletivo (RH)</h4>
+            <div id="rhCandidates" class="candidates"></div>
+          </div>
+          <div id="tab-shop" class="tab-body" hidden>
+            <div class="shop-card">
+              <div class="shop-head"><span class="shop-ico">🛍️</span><div><h3>Loja da Fábrica <span id="shopLevel" class="chip">Nível 1</span></h3><p>Vende lápis direto ao público. Quando não há pedido, a linha produz lápis para a loja.</p></div>
+                <button data-act="viewshop" class="ghost-dark">👀 Ver a loja</button></div>
+              <div class="shop-stock"><span>Estoque</span><div class="meter big"><div id="shopBar"></div></div><b id="shopStock">0 / 400</b></div>
+              <div class="shop-kpis"><div><span>Vendas hoje</span><b id="shopToday">0</b></div><div><span>Ontem</span><b id="shopYesterday">0</b></div><div><span>Ritmo de venda</span><b id="shopRate">—</b></div></div>
+              <p class="people-h small">Preço</p>
+              <div id="shopPrices" class="shop-prices"></div>
+              <p class="people-h small">Parte da produção que vai para as prateleiras enquanto há pedido</p>
+              <div id="shopShare" class="shop-share"></div>
+              <div class="shop-actions"><button id="shopProduce" data-act="shopprod" class="toggle-btn"></button><button id="shopUpgrade" data-act="shopup" class="upgrade-btn"></button></div>
+            </div>
+            <h3 class="people-h">🎪 Feiras</h3>
+            <p class="hint">A cada 3 dias acontece uma feira. Monte um estande para vender lápis da loja, ganhar pedidos grandes e contratar gente nova, inclusive além das vagas normais.</p>
+            <p id="fairNow" class="now-line"></p>
+            <div id="booths" class="booths"></div>
+            <div class="fair-row"><h4 class="people-h small">Candidatos no estande</h4><button data-act="viewbooth" class="ghost-dark">👀 Ver o estande</button></div>
+            <div id="candidates" class="candidates"></div>
+          </div>
+          <div id="tab-people" class="tab-body" hidden>
+            <div class="morale-card">
+              <div class="mc-num"><strong id="pMorale">70</strong><span>moral</span></div>
+              <div class="mc-info"><b id="pMoraleText">Motivada</b><div class="meter big"><div id="pMoraleBar"></div></div><small id="pMoraleFx"></small><div id="pBuffs" class="buffs"></div></div>
+            </div>
+            <p class="hint">Moral alta deixa a linha até 10% mais rápida e com menos quebras. Ela cai um pouco todo dia e quando um pedido é perdido. Moral muito baixa faz operadores pedirem demissão.</p>
+            <h3 class="people-h">🎤 Auditório — palestras</h3>
+            <p id="talkNow" class="now-line"></p>
+            <div id="talks" class="talks"></div>
+            <div class="sched-row" id="talkSched"><span>📅 Agendar palestra:</span><select id="talkSchedId" aria-label="Palestra"></select><select id="talkSchedDay" aria-label="Dia"></select><select id="talkSchedHour" aria-label="Hora"></select><button type="button" id="talkSchedBtn" class="primary">Agendar</button></div>
+            <h3 class="people-h">🎉 Clube da Fábrica — festas</h3>
+            <p id="partyNow" class="now-line"></p>
+            <form id="partyForm" class="party-form">
+              <label for="partyName">Nome da festa
+                <input id="partyName" type="text" maxlength="50" placeholder="Ex.: Aniversário de 1 ano da fábrica" autocomplete="off">
+              </label>
+              <label for="partySize">Tamanho
+                <select id="partySize">
+                  <option value="pequena">Pequena — happy hour</option>
+                  <option value="media">Média — festa da equipe</option>
+                  <option value="grande">Grande — festão com as famílias</option>
+                </select>
+              </label>
+              <button id="partyBtn" type="submit" class="primary">🎉 Fazer a festa</button>
+              <small id="partyFx" class="party-fx"></small>
+              <div class="sched-row"><span>📅 Ou agende a festa:</span><select id="partyDay" aria-label="Dia"></select><select id="partyHour" aria-label="Hora"></select><button id="partySchedBtn" type="button">Agendar festa</button></div>
+            </form>
+            <div id="partyIdeas" class="ideas" aria-label="Ideias de festa"></div>
+            <h4 class="people-h small">Festas recentes</h4>
+            <ul id="partyHistory" class="party-history"></ul>
+            <h4 class="people-h small">📅 Agenda de palestras e festas</h4>
+            <ul id="scheduleList" class="party-history"></ul>
+          </div>
+          <div id="tab-cores" class="tab-body" hidden>
+            <p class="hint">Descubra cores novas no laboratório, crie lápis só seus, dispute o mercado com os concorrentes e pinte a fábrica do seu jeito.</p>
+            <div class="cores-grid">
+              <section class="cores-card studio-card">
+                <h3>✏️ Estúdio de Lápis</h3>
+                <canvas id="studioCanvas" width="640" height="130" aria-label="Prévia do lápis"></canvas>
+                <label class="studio-name">Nome do lápis <input id="studioName" type="text" maxlength="28" placeholder="Ex.: Turbo Arco-Íris"></label>
+                <div class="slot"><span>Corpo</span><div id="studio-body" class="sws"></div></div>
+                <div class="slot"><span>Estampa</span><div class="sws patterns">
+                  <button type="button" data-cores="pattern" data-pattern="liso">Liso</button><button type="button" data-cores="pattern" data-pattern="listras">Listras</button><button type="button" data-cores="pattern" data-pattern="bolinhas">Bolinhas</button><button type="button" data-cores="pattern" data-pattern="degrade">Degradê</button><button type="button" data-cores="pattern" data-pattern="xadrez">Xadrez</button></div></div>
+                <div class="slot"><span>Cor da estampa</span><div id="studio-stripe" class="sws"></div></div>
+                <div class="slot"><span>Borracha</span><div id="studio-cap" class="sws"></div></div>
+                <div class="slot"><span>Ponta</span><div id="studio-tip" class="sws"></div></div>
+                <div id="studioInfo" class="studio-info"></div>
+                <div class="studio-actions"><button type="button" data-cores="random">🎲 Surpreenda-me</button><button type="button" id="studioLaunch" class="primary" data-cores="launch">🚀 Lançar lápis</button></div>
+                <h4>Seus lápis</h4>
+                <div id="myPencils" class="my-pencils"></div>
+              </section>
+              <section class="cores-card"><h3>🔬 Laboratório de Cores</h3><div id="labBox"></div></section>
+              <section class="cores-card"><h3>🏆 Concorrentes</h3><div id="rivalsBox"></div></section>
+              <section class="cores-card"><h3>🏠 Tema de cores da fábrica</h3><div id="themeBox"></div></section>
+            </div>
+          </div>
+          <div id="tab-brand" class="tab-body" hidden>
+            <p class="hint">Dê a cara da sua empresa: o nome e a logo aparecem no letreiro do galpão de produção, no totem da entrada, na administração, no centro de visitantes e no topo do jogo.</p>
+            <div class="brand-editor">
+              <div id="brandPreview" class="brand-preview"><span>✏️</span></div>
+              <div class="brand-fields">
+                <label>Nome da fábrica
+                  <input id="brandNameInput" type="text" maxlength="40" placeholder="Fábrica de Lápis">
+                </label>
+                <div class="brand-buttons">
+                  <label class="file-btn primary">📁 Enviar logo
+                    <input id="brandLogoInput" type="file" accept="image/*" hidden>
+                  </label>
+                  <button id="brandRemoveLogo" type="button" hidden>Remover logo</button>
+                </div>
+                <small>PNG com fundo transparente fica melhor. A imagem é salva só neste navegador.</small>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <aside>
+        <section class="panel order-panel">
+          <div class="section-title">
+            <h2>Pedidos em produção</h2>
+            <span id="activeCount" class="chip">0/2</span>
+          </div>
+          <div id="activeOrders" class="orders"></div>
+          <div class="section-title offers-title">
+            <h2>Quadro de ofertas</h2>
+            <span class="chip muted">escolha bem</span>
+          </div>
+          <div id="offers" class="orders"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title">
+            <h2>Diário da fábrica</h2>
+            <button id="soundBtn" class="icon-btn" aria-label="Ativar ou desativar sons">🔊 Som</button>
+          </div>
+          <ol id="log" class="log" aria-live="polite"></ol>
+        </section>
+
+        <details class="panel keys fold-keys">
+          <summary><strong>⌨️ Atalhos do teclado</strong></summary>
+          <span><kbd>Espaço</kbd> iniciar/pausar</span>
+          <span><kbd>1</kbd>–<kbd>7</kbd> ligar máquina</span>
+          <span><kbd>C</kbd> caldeira</span>
+          <span><kbd>L</kbd> ligar tudo</span>
+          <span><kbd>V</kbd> trocar vista</span>
+        </details>
+      </aside>
+    </div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <div id="eventModal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+      <p class="eyebrow" id="eventEyebrow">ACONTECIMENTO</p>
+      <h2 id="eventTitle">Acontecimento</h2>
+      <div id="eventText"></div>
+      <div id="eventChoices" class="choice-list"></div>
+    </div>
+  </div>
+
+  <div id="tutorialModal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+      <p class="eyebrow">BEM-VINDO, GERENTE</p>
+      <h2 id="tutorialTitle">Sua primeira fábrica</h2>
+      <p>Você administra uma pequena fábrica de lápis. Transforme madeira, grafite e tinta em lucro.</p>
+      <ol class="tutorial-steps">
+        <li><strong>Inicie o turno e aceite um pedido</strong> no quadro de ofertas. Compare prazo, quantidade e pagamento.</li>
+        <li><strong>Ligue as sete máquinas.</strong> A linha só produz com todas funcionando — e anda no ritmo da mais lenta, o <em>gargalo</em>.</li>
+        <li><strong>Acenda a caldeira.</strong> Vapor na faixa verde deixa a linha até 25% mais rápida — mas cuidado com a pressão alta.</li>
+        <li><strong>Cuide do desgaste.</strong> Uma manutenção barata agora evita um conserto caro depois.</li>
+        <li><strong>Compre matéria-prima</strong> no Mercado antes que acabe.</li>
+        <li><strong>Invista</strong> em melhorias e equipe para dar conta de pedidos maiores.</li>
+      </ol>
+      <p class="muted-text">Máquinas ligadas gastam energia mesmo sem pedido. Desligue quando a linha estiver parada.</p>
+      <button id="tutorialBtn" class="primary full">Começar</button>
+    </div>
+  </div>
+
+  <footer>
+    Projeto educacional independente, inspirado em uma fábrica de lápis. Não afiliado à Faber-Castell.
+  </footer>
+  <script src="vendor/three.min.js"></script>
+  <script src="factory3d.js?v=75"></script>
+  <script src="cores.js?v=75"></script>
+  <script src="game.js?v=76"></script>
+  <script src="visitantes.js?v=75"></script>
+</body>
+</html>

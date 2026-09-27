@@ -1,0 +1,258 @@
+FÁBRICA DE LÁPIS — COMO JOGAR (versão 2)
+
+1. Dê dois cliques em INICIAR-JOGO.bat.
+2. Leia o tutorial e clique em "Começar".
+3. Clique em "Iniciar turno" (ou aperte Espaço).
+4. Aceite um pedido no QUADRO DE OFERTAS. Compare prazo, quantidade e pagamento —
+   o jogo mostra se a sua linha consegue entregar a tempo.
+5. Ligue as sete máquinas ("Ligar tudo" ou tecla L). A linha só produz com todas
+   ligadas e anda no ritmo da mais lenta (o GARGALO).
+6. Fique de olho no DESGASTE: manutenção preventiva custa R$ 30; conserto custa R$ 80
+   e deixa a linha parada.
+7. Compre madeira, grafite e tinta no MERCADO. Os preços mudam todo dia.
+8. Invista: melhore as máquinas (até o nível 3), amplie o armazém e contrate equipe
+   (técnico, operadores, comprador).
+9. Cumpra as METAS para subir o nível da fábrica. Vitória: R$ 15.000 em caixa.
+10. No fim de cada dia aparece o relatório com receitas e despesas.
+
+Fim de jogo: caixa abaixo de −R$ 500 ou reputação zerada.
+
+ATALHOS
+  Espaço  iniciar / pausar
+  1 a 7   ligar ou desligar cada máquina
+  C       acender/apagar a caldeira
+  L       ligar todas as máquinas
+  V       alternar vista aérea / interior
+
+MODO PASSEIO (controle o gerente)
+  Clique em "🚶 Andar pela fábrica". Você controla o gerente em terceira pessoa:
+  WASD ou setas para andar, Shift para correr, arraste o mouse para girar a câmera.
+  Chegue perto da porta de um prédio e aperte E para entrar. Dentro da produção,
+  perto de uma máquina, E liga/desliga. Perto da saída, E volta para a rua.
+  Esc sai do modo passeio. No celular aparecem botões de direção na tela.
+
+FÁBRICA 3D
+  Arraste para girar, role (ou faça pinça no celular) para aproximar.
+  Na vista aérea, clique em qualquer prédio (ou na placa dele) para ENTRAR no setor:
+  Produção, Madeira, Tintas, Estoque, Acabamento, Logística, Expedição, Administração,
+  Oficinas e Centro de Visitantes. Cada um tem seu interior animado e um painel com
+  dados e atalhos (comprar material, manutenção geral, equipe...).
+  Na Produção: clique numa máquina para ligar/desligar.
+
+LINHA DE PRODUÇÃO (7 etapas)
+  Corte → Mina → Prensa (colagem) → Fresagem (formato) → Pintura → Secagem a vapor → Embalagem.
+  O "Painel da produção" mostra ritmo, produção do dia, gargalo, pedido atual, vapor e
+  a luz de cada máquina. O mesmo painel aparece num telão dentro do galpão 3D.
+
+CALDEIRA
+  Queima lenha (usa a madeira do estoque) e manda vapor para a secagem.
+  Pressão na faixa verde = linha até 25% mais rápida (mais com melhorias).
+  Fogo alto sem pedido faz a pressão subir demais: a válvula de segurança abre e a
+  caldeira desgasta — se passar do limite muitas vezes, ela quebra.
+  Controle o fogo (1 a 3), faça manutenção e melhore até o nível 3.
+
+MORAL DA EQUIPE, AUDITÓRIO E CLUBE DA FÁBRICA
+  A moral (0 a 100) aparece no topo. Moral alta = linha até 10% mais rápida e menos
+  quebras. Ela cai um pouco todo dia e quando um pedido é perdido; muito baixa faz
+  operadores pedirem demissão.
+  AUDITÓRIO: agende palestras (segurança, qualidade, inovação, motivação, escolas).
+  O efeito vale quando a palestra termina.
+  CLUBE DA FÁBRICA: crie festas com o nome que quiser e escolha o tamanho. Tem fogos
+  de artifício sobre o clube, pista de dança, globo e balões. Tudo na aba
+  "Clube & Auditório" ou clicando nos prédios.
+
+LOJA DA FÁBRICA
+  Fica de frente para a rua, fora do muro. Vende lápis direto ao público.
+  Quando não há pedido, a linha produz lápis para o estoque da loja.
+  Escolha o preço (Promoção, Normal, Premium), contrate vendedores e amplie a loja.
+  Durante os pedidos, escolha quanto da produção vai para as prateleiras (0%, 25%, 50%).
+
+ADMINISTRAÇÃO E DIRETORIA
+  O prédio da administração ficou maior, com salas de vidro: Sala do CEO, Financeiro,
+  Marketing, PCP, RH, DP, Reunião e Recepção. Na aba "Diretoria":
+  - coloque seu nome na placa e sua FOTO no quadro da sala do CEO;
+  - Marketing: campanha nas redes (+50% clientes na loja) ou comercial na TV;
+  - Financeiro: renegociar fornecedores (matéria-prima 15% mais barata no dia);
+  - PCP: otimizar o plano (linha 10% mais rápida por 2 dias);
+  - RH: processo seletivo (candidatos sem esperar feira) e treinamento;
+  - DP: vale-refeição e benefícios (a moral cai metade por dia).
+
+SALA DE REUNIÃO
+  Na aba "Diretoria" (ou no painel da Administração), convoque uma reunião: o pessoal
+  sai das salas, anda pelo corredor e senta à mesa. Apresente no telão:
+  - Resultados da fábrica (slides automáticos);
+  - Suas imagens (exporte seus slides como PNG/JPG e escolha várias);
+  - Sua tela ao vivo (funciona abrindo pelo INICIAR-JOGO.bat, no PC).
+  Use ◀ ▶ (ou PageUp/PageDown) para passar os slides. A 1ª reunião do dia dá +3 de moral.
+
+FEIRAS E ESTANDE
+  A cada 3 dias acontece uma feira. Monte um estande (pequeno, médio ou grande) para
+  vender lápis da loja, ganhar pedidos grandes e contratar gente nova — inclusive
+  além das vagas normais (até 5 operadores, 4 vendedores, 2 técnicos).
+  Clique em "Ver o estande" para ver seu estande no pavilhão em 3D.
+
+MUSEU DO LÁPIS
+  O antigo Centro de Visitantes virou o Museu do Lápis, com pórtico de colunas e jardim.
+  Dentro, uma linha do tempo com 6 peças da história do lápis — cada meta concluída
+  ajuda a liberar a próxima. A última peça é a sua própria fábrica.
+  Todo fim de dia o museu vende ingressos: quanto maior a reputação e o acervo,
+  mais visitantes.
+
+DIA E NOITE
+  O sol atravessa o céu durante o turno. Às 18h aparece o relatório do dia e a noite
+  passa com estrelas, lua e luzes acesas. Dá para pular a noite no botão "Pular a noite".
+
+FALTA DE ENERGIA
+  Às vezes a luz acaba: tudo apaga, as máquinas param e acende a luz de emergência.
+  Espere a energia voltar ou clique em "Ligar gerador" (R$ 150).
+
+GERENTE GERAL
+  Na aba "Equipe" contrate o Gerente geral (R$ 220/dia). Ele toca a fábrica sozinho:
+  abre o turno, escolhe os pedidos que dá para entregar no prazo, compra material,
+  liga as máquinas, faz manutenção e consertos, liga o gerador, decide os acontecimentos
+  e fecha o dia. Marque ou desmarque o que ele pode fazer (investir vem desligado).
+  Tudo o que ele faz aparece no Diário com o ícone 👔.
+  COM A PÁGINA FECHADA: se o gerente estiver contratado, ele continua trabalhando.
+  Quando você volta, o jogo calcula o tempo que passou (até 12 horas) e mostra um
+  resumo: dias, pedidos, lápis, manutenções e quanto entrou no caixa.
+  Longe do CEO ele rende metade: 1 hora fora = 30 minutos de jogo.
+  O mesmo vale se a aba ficar escondida atrás de outras.
+
+MARCA
+  Na aba "Marca" você muda o nome da fábrica e envia a sua logo. Ela aparece no
+  letreiro do galpão, no totem da entrada, na administração, no centro de visitantes
+  e no topo do jogo.
+
+O jogo funciona sem internet e sem a ESP32.
+Seu progresso é salvo automaticamente no navegador.
+A versão anterior está guardada na pasta fabrica-de-lapis-game-backup-v1.
+
+Esta é uma simulação educacional independente e não oficial.
+
+VISITANTES (FÁBRICA ABERTA)
+- Na versão publicada, quem abrir o link entra na sua fábrica como visitante.
+- O visitante aparece como um bonequinho com o nome dele (👤) e anda pelo complexo
+  (WASD/setas, E para entrar nos prédios). Você aparece como 👔 quando está passeando.
+- Visitantes veem a SUA fábrica ao vivo: máquinas, pedidos, caixa, dia/noite, festas.
+- Visitantes só olham: não ligam máquinas, não compram, não mudam nada.
+- O quadro "👥 na fábrica" mostra quem está com a página aberta agora.
+- Para convidar: compartilhe o artefato com a pessoa (convite por e-mail ou alguém da
+  organização). Link público não entra na sala.
+- Se você (CEO) fechar a página, os visitantes veem a fábrica parada até você voltar.
+- Botão "📨 Convidar" (ao lado de "Andar pela fábrica"): prepara a mensagem com o link
+  e envia por WhatsApp, Gmail ou copia. O acesso ao link ainda é liberado uma vez no
+  botão Compartilhar da página (organização ou e-mail da pessoa).
+
+ABA 🎨 CORES
+- Laboratório de Cores (prédio novo nos fundos, entre Tintas e Expedição): pesquise cores
+  novas (laranja, rosa, turquesa, pastéis...). Amplie o laboratório para liberar metálicas
+  e neon (nível 2) e glitter Galáxia (nível 3, pesquisa 40% mais rápida).
+  A pesquisa só anda com a fábrica aberta.
+- Tinturaria: cada cor descoberta ganha um tanque de pigmento no setor de Tintas.
+- Estúdio de Lápis: escolha corpo, estampa (liso, listras, bolinhas, degradê, xadrez),
+  cor da estampa, borracha e ponta. Dê um nome e lance. O lápis vira produto de verdade:
+  aparece nos pedidos, paga mais que os comuns e fica exposto na vitrine do laboratório.
+  Nos 3 primeiros dias é novidade e sai mais. Até 6 lápis na linha ao mesmo tempo.
+- Concorrentes: Grafitão S.A., Arco-Íris Lápis e EcoTraço disputam o mercado com você.
+  Sua fatia muda quanto os pedidos pagam e quanto a loja vende. No fim de cada dia eles
+  se mexem: promoções (pedidos pagam menos), cor da moda (lápis seus com essa cor pagam +30%),
+  selo verde (mais pedidos de lápis ecológico) e até cópia do seu lançamento.
+  Para ganhar mercado: lance lápis, descubra cores, cuide da reputação e faça Marketing.
+- Tema da fábrica: pinte paredes, detalhes e telhados de todos os prédios com temas
+  prontos ou do seu jeito. A primeira pintura é grátis.
+
+FOCO NO PRÉDIO
+- Quando você entra num prédio na fábrica 3D, a página embaixo mostra só o que é daquele
+  lugar (ex.: Laboratório → aba Cores; Loja → Loja & Feiras; Caldeira → só a caldeira;
+  Produção → máquinas e pedidos). Na vista aérea aparece tudo.
+- A faixa verde "Você está em: ..." tem o botão "Mostrar tudo" para ver o resto.
+
+REFEITÓRIO E HORÁRIOS DA EQUIPE
+- Refeitório novo ao lado do depósito de Madeira, de frente para a rua.
+- Das 12:00 às 13:00 é hora do almoço: a linha para, o pessoal sai da Produção e vai a pé
+  até o refeitório. Lá dentro todo mundo senta nas mesas e o cardápio do dia aparece no quadro.
+  Às 13:00 voltam todos para o trabalho.
+- Cada almoço custa por pessoa e sobe a moral. Melhore o refeitório pelo quadro da cena:
+  Marmitas (R$ 8, +1 moral) → Buffet (R$ 1.800; R$ 12, +3) → Restaurante com chef (R$ 4.500; R$ 16, +5).
+- Às 18:00 o expediente acaba: o pessoal sai dos prédios, anda até os carros no
+  estacionamento e os carros vão embora. À noite o estacionamento fica mais vazio.
+  De manhã os carros chegam, estacionam e o pessoal entra para trabalhar.
+- A noite ficou um pouco mais longa (cerca de 12 segundos) para dar tempo de todos saírem.
+
+NOVOS SETORES (ÁREA DE EXPANSÃO)
+Cada um começa como canteiro de obras (cerca, guindaste e placa com o preço).
+Entre no setor e clique em "Construir". Depois de pronto, o efeito vale na hora.
+- 🧪 Controle de Qualidade (R$ 2.500, ao lado da Produção): pedidos pagam +8% e +1% de reputação por entrega.
+- ⚫ Preparo da Mina (R$ 3.000): 12% menos grafite; lápis 2B paga +15%.
+- 🌲 Viveiro (R$ 2.200): em 3 dias as mudas crescem; madeira 15% mais barata e selo verde no mercado.
+- ♻️ Reciclagem (R$ 1.800): caldeira gasta 40% menos lenha; sobras rendem R$ 40 por dia.
+- ⚡ Subestação e Energia Solar (R$ 3.500): falta de luz 60% mais rara; energia 25% mais barata.
+- 🚒 Brigada e Enfermaria (R$ 1.500): máquinas desgastam 15% menos; +4 de moral.
+- 🛂 Portaria (R$ 1.200): ofertas chegam 15% mais rápido; cancelas abrem para os carros da equipe.
+- 🎓 Centro de Treinamento (R$ 2.800): linha 8% mais rápida e consertos 30% mais curtos.
+- 👶 Creche (R$ 2.000): +2 de moral todo dia.
+- 📨 Convidar (site publicado): gera um link com o código da sua fábrica. Quem abre o link entra na hora,
+  sem cadastro, como visitante: vê a fábrica ao vivo e anda por ela. A lista "na fábrica" mostra quem está
+  dentro; clique no nome para ir até a pessoa (ande junto com "Andar pela fábrica").
+- 🏭 Linhas de produção: em "Máquinas e caldeira" dá para comprar até 5 linhas dentro da Produção.
+  Cada linha extra faz mais um pedido ao mesmo tempo (65% do ritmo) e abre uma vaga a mais na fila.
+Os setores ficam dos dois lados do complexo, além da rua do perímetro.
+
+MAPA NOVO DO COMPLEXO (inspirado numa foto aérea)
+- Vista aérea com o norte para cima: portaria e estacionamento lotado na entrada de cima,
+  administração comprida ao lado, núcleo de galpões no centro (Produção, Estoque, Tintas,
+  Acabamento, Caldeira, Logística, Expedição, Qualidade e Laboratório).
+- À esquerda: Galpão 2, Madeira, Viveiro e uma mata de pinus fechada.
+- Canto de cima: Clube da Fábrica com campo de futebol, quadra e piscina.
+- Avenida interna atravessando o terreno; embaixo, a praça com Museu e Refeitório e a área
+  de expansão (Treinamento, Creche, Preparo da Mina, Reciclagem, Oficinas).
+- À direita: Brigada, Subestação com painéis solares e a rodovia na diagonal com caminhões.
+- Os carros da equipe saem e entram pela portaria no alto. A noite dura cerca de 14 segundos.
+- Auditório com telhado de duas águas em telha ondulada cinza e paredes claras, na parte de
+  baixo do terreno perto do Museu. Ao lado dele fica o Ambulatório (cruz vermelha, ambulância,
+  recepção, leitos e enfermagem de plantão).
+- Prédios medidos na foto aérea: cada galpão tem a posição, o tamanho, o tipo de telhado e a
+  cor da foto (Estoque escuro, Tintas em dentes de serra, Acabamento cinza-claro, Produção e
+  Galpão 2 marrons, Logística comprida, coluna de prédios pequenos embaixo à direita,
+  galpão branco da Madeira e o de dentes de serra da Mina ao lado da mata).
+  Auditório e Ambulatório ficam ao lado do estacionamento, e o Refeitório ao lado da Logística.
+- Refeitório ao lado do Auditório e do Ambulatório: prédio comprido de dois andares, paredes
+  verdes (térreo mais claro), janelas brancas, cobertura verde na frente e telhado baixo.
+  No almoço o pessoal sai pelos fundos da Produção e passa entre Tintas e Acabamento.
+- Administração: prédio envidraçado no gramado da direita, com bandeiras e rua de acesso.
+- Rodovia afastada dos prédios, com gramado e pinheiros entre ela e o complexo.
+- Entrada em V: duas rodovias se encontram na ponta de cima e o estacionamento (3 pátios)
+  fica dentro do V. A Produção é o galpão colado ao estacionamento; o pessoal sai direto
+  para os carros. Na ponta da faixa comprida fica a CATRACA (entrada com o letreiro da marca)
+  e a faixa é o AMBULATÓRIO. Depois da rua vêm o AUDITÓRIO (telhado branco comprido) e o
+  REFEITÓRIO (prédio creme com faixa de janelas escuras e cobertura de vidro).
+- A Portaria fica na rua da direita, com cancela; o totem da marca fica perto da rodovia.
+- O Estoque passou para o bloco marrom do centro. A noite dura cerca de 16 segundos.
+- Todos os novos setores já vêm construídos (sem canteiro de obras), com os efeitos valendo
+  desde o início — inclusive em saves antigos.
+
+ARQUITETURA "FÁBRICA EM LINHA RETA"
+- Norte: portal com as rodovias em V, estacionamentos, catraca e Administração.
+- Rua das pessoas (calçadão sem caminhões): Ambulatório, Refeitório, Auditório,
+  Treinamento e Creche. O pessoal passa pela catraca e desce pelo passeio até a Produção.
+- Pátio de utilidades: Caldeira, chaminé, silos, caixa d'água, Subestação, Reciclagem e
+  Oficinas, com uma galeria de tubos (vapor e energia) até as linhas.
+- Linha do lápis de oeste para leste: Madeira, Preparo da Mina, Tintas e Laboratório →
+  Produção (linha 1) e Galpão 2 (linha 2) lado a lado → Acabamento → Qualidade → Estoque →
+  Expedição e Logística. Esteiras cobertas ligam os prédios e as caixas andam quando a
+  linha está produzindo.
+- Caminhões: matéria-prima entra pela Portaria de Caminhões no oeste (circuito próprio até a
+  Madeira); pedidos saem pelas docas da Expedição no leste.
+- Sul: vitrine para visitantes (Museu, Loja e Clube com piscina, quadra e campo) de frente
+  para a rua da cidade. Oeste: mata de pinus e Viveiro. A noite dura cerca de 18 segundos.
+- Câmera da vista aérea: a rodinha aproxima bem mais (dá para ver cada prédio de perto sem
+  entrar). Quando o zoom chega no limite, a rodinha volta a rolar a página.
+  Botão direito ou Shift + arrastar move o mapa; no celular, arraste com dois dedos.
+  WASD (ou as setas com o mouse em cima da cena) também movem o mapa.
+
+DE VOLTA AO COMPLEXO COMPACTO (como no vídeo)
+- O mapa voltou ao formato compacto original (Produção no centro com faixa de tijolos,
+  torre de vidro da Administração, Acabamento e Logística à direita, fileira dos fundos,
+  área de lazer na frente e setores novos dos dois lados), com os prédios maiores e mais altos.
+- Mantidos: Ambulatório ao lado do Auditório, Auditório com telha ondulada, Refeitório creme,
+  zoom mais perto e arrastar o mapa. A noite voltou a durar cerca de 12 segundos.

@@ -1,0 +1,11 @@
+wrangler.jsonc
+.assetsignore
+worker/
+node_modules/
+.wrangler/
+LEIA-ME.txt
+INICIAR-JOGO.bat
+scripts/
+README.md
+.gitignore
+.git/
