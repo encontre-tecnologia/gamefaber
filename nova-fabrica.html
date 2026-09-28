@@ -191,7 +191,7 @@ const CLUBPATHS=(()=>{const f=CLUB[0],c=Math.cos(f.a),sn=Math.sin(f.a),tw=(lx,ly
 const CLUBGATE=[866,24],CLUBGATE2=[719,-4],CLUBSIGN=[795,8];
 // estrada que sai da rotatória e sobe pela mata, passando ao lado do clube
 const STEAMSRC=[];
-const PERIMA=[[1128,243],[1128,210],[935,98],[915,95],[906,78],[880,59],[768,42]];
+const PERIMA=[[1154,253],[1154,225],[1128,210],[935,98],[915,95],[906,78],[880,59],[768,42]];
 const PERIMC=[[701,26.8],[700,21.7],[700,15.5],[703.5,5.2]];
 const PERIM=[[744,34],[729,31],[715.8,28],[701,26.8],[695,28],[683,31],[670.6,36.5],[660.3,45.4],[654,54.6],[651,67],[649.6,83.4],[648,97.8],[642.8,105],[637.1,107.5],[599.5,126.4],[557.6,145.3],[516,154.7],[477,152],[268,232],[88,328],[25,425],[4,550],[-3,716],[4,881],[18,971],[74,999],[268,1013],[505,1020],[783,1020],[1061,1022],[1338,1022],[1443,999],[1478,895],[1491,715],[1478,577],[1457,439],[1422,391],[1209,293]];
 const PERIMS=[PERIMA,PERIM,PERIMC];
@@ -783,7 +783,7 @@ tree(1157,221,2.6);tree(1192,244,2.8);
 }
 
 // portão de grade verde na frente da rua de pedra (igual ao da portaria branca)
-{const g=new THREE.Group();g.position.set(wx(921),0,wz(260));g.rotation.y=Math.PI/2;S.add(g);const gr=M(0x3f6f55,{roughness:.5,metalness:.4}),wc=M(0xe9e7e1,{roughness:.85});
+for(const gx of [921,1154]){const g=new THREE.Group();g.position.set(wx(gx),0,wz(260));g.rotation.y=Math.PI/2;S.add(g);const gr=M(0x3f6f55,{roughness:.5,metalness:.4}),wc=M(0xe9e7e1,{roughness:.85});
  const b=(w,h,d,m,x,y,z)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(x,y,z);q.castShadow=true;g.add(q);return q;};
  const W=3.3;for(const [x0,x1] of [[-W/2,0],[0,W/2]]){b(x1-x0-.04,.06,.06,gr,(x0+x1)/2,1.35,0);b(x1-x0-.04,.06,.06,gr,(x0+x1)/2,.12,0);for(let x=x0+.07;x<=x1-.05;x+=.14)b(.035,1.25,.035,gr,x,.72,0);}
  for(const sx of [-1,1])b(.3,1.55,.3,wc,sx*(W/2+.15),.78,0);}
