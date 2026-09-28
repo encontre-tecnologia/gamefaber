@@ -37,21 +37,18 @@ html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;touch-ac
 #walkTop{position:absolute;top:12px;right:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}#walkTop button{background:#202124;color:#fff;border:0;border-radius:20px;padding:9px 14px;font:600 13px system-ui,sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.4);cursor:pointer}#walkTop button.on{background:#2f6a4a}
 @media (max-width:640px){#tourCard{width:calc(100% - 24px)!important;bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}#walkJoy{width:140px;height:140px;left:18px;bottom:calc(34px + env(safe-area-inset-bottom,0px))}#walkKnob{left:40px;top:40px;width:60px;height:60px}#walkHelp{bottom:auto!important;top:64px;max-width:calc(100% - 24px);font-size:11px}#walkTop{top:8px;right:8px;left:8px;justify-content:center}#walkTop button{padding:8px 12px}.nav{bottom:calc(40px + env(safe-area-inset-bottom,0px))}.nav .comp{width:52px;height:52px}.nav .zoom button{width:52px;height:48px}#walkDoor{bottom:calc(190px + env(safe-area-inset-bottom,0px))!important}}
 #walkDoor{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);background:#2f6a4a;color:#fff;border:0;border-radius:24px;padding:13px 22px;font:700 15px system-ui,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.45);cursor:pointer;animation:wdp 1.2s ease-in-out infinite}@keyframes wdp{50%{transform:translateX(-50%) scale(1.06)}}
-#walkUI.touring #walkJoy{display:none}#walkUI.touring #tourCard{bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}
+#walkUI.touring #walkJoy,#walkUI.touring #walkTop{display:none}#walkUI.touring #tourCard{bottom:calc(14px + env(safe-area-inset-bottom,0px))!important}.nav.tourZoom{top:12px;bottom:auto;right:12px;z-index:10}.nav.tourZoom .comp{display:none}
 #tourFade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .7s;z-index:9}
 #tourCard{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 380px));background:rgba(32,33,36,.95);color:#e8eaed;border-radius:14px;padding:12px 14px;font:14px/1.45 system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.45);z-index:9}#tourCard .who{color:#f2c230;font-weight:700;margin-bottom:4px}#tourCard .bt{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}#tourCard button{background:#2f6a4a;color:#fff;border:0;border-radius:18px;padding:8px 14px;font:600 13px system-ui,sans-serif;cursor:pointer}#tourCard button+button{background:#4a4f52}
 #walkHelp{transition:opacity .6s;position:absolute;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:rgba(11,38,27,.82);color:#e8efe9;font:12px/1.4 system-ui,sans-serif;padding:7px 12px;border-radius:9px;pointer-events:none;max-width:calc(100% - 180px);text-align:center}
 #prodInfo{position:absolute;left:14px;top:14px;z-index:7;max-width:min(340px,calc(100% - 28px));background:rgba(32,33,36,.94);color:#e8eaed;border-radius:14px;padding:14px 16px;font:13px/1.45 system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.45)}#prodInfo b{display:block;font-size:15px;margin-bottom:4px;color:#fff}#prodInfo .st{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}#prodInfo .st span{background:#2f6a4a;color:#eaf6ee;border-radius:10px;padding:3px 9px;font-size:12px}#prodInfo .n{color:#8ab4f8;font-size:12px;margin-top:8px}
 #hallExit{position:absolute;top:14px;left:50%;transform:translateX(-50%);z-index:7;background:#202124;color:#fff;border:0;border-radius:22px;padding:10px 18px;font:600 14px system-ui,sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.4);cursor:pointer}#hallExit:hover{background:#2f3033}
 #wrap{position:relative;flex:1;min-height:320px;background:#c9d3cf;overflow:hidden}
-.focos{display:contents}
-@media (max-width:640px){.bar{padding:8px 0 8px 12px;gap:6px}.bar h1{font-size:14px}.bar button{padding:7px 10px;font-size:12.5px}
- .bar{position:relative;flex-wrap:wrap;row-gap:6px;padding-right:12px}.bar h1 span{display:none}.bar .main,#bMenu{flex:1 1 auto;white-space:nowrap;justify-content:center;text-align:center}
- #hint{bottom:auto!important;top:8px}
- #bMenu{display:inline-flex!important;flex:none;background:#2f6a4a!important}
- .focos{display:none;position:fixed;left:8px;right:8px;top:var(--mt,56px);z-index:30;background:#0b261b;border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:10px;gap:8px;grid-template-columns:1fr 1fr;max-height:62vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 10px 30px rgba(0,0,0,.5)}
- .focos.open{display:grid}.focos button{white-space:normal!important;text-align:left;padding:10px!important;font-size:13px!important;line-height:1.25}
- 
+.focos{display:contents}#menuClose{display:none}
+@media (max-width:640px){.bar{padding:9px 12px;gap:8px;flex-wrap:nowrap;min-height:46px}.bar h1{font-size:14px;overflow:hidden;text-overflow:ellipsis;margin:0}.bar h1 span{display:none}.bar a{flex:none;margin:0}.bar button{padding:8px 11px;font-size:13px}#hint{bottom:auto!important;top:8px}
+ #bMenu{display:inline-flex!important;align-items:center;justify-content:center;flex:none;margin-left:auto;background:#25332c!important;border-color:#617568!important;color:#fff!important;font-weight:650!important;white-space:nowrap}
+ body.mobile-menu-open::before{content:"";position:fixed;inset:0;z-index:29;background:rgba(0,0,0,.6)}.focos{display:none;position:fixed;top:0;right:0;bottom:0;width:min(320px,calc(100vw - 48px));box-sizing:border-box;z-index:30;background:#17251e;border-left:1px solid #4b6254;padding:64px 14px 22px;gap:8px;grid-template-columns:1fr;align-content:start;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:-12px 0 30px rgba(0,0,0,.5)}
+ .focos.open{display:grid}.focos button{white-space:normal!important;text-align:left;padding:12px!important;font-size:14px!important;line-height:1.25}.focos #bTag{width:100%}.focos #menuClose{display:block;position:absolute;top:12px;right:14px;padding:8px 10px!important;background:#293a30;font-weight:700}
  #wrap{min-height:0}.lug{display:contents!important}#bLug{display:none!important}}
 </style>
 </head>
@@ -1938,16 +1935,21 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
  addEventListener('keydown',e=>{if(!WK.on||e.target.tagName==='INPUT')return;WK.keys[e.code]=true;if(e.code==='Escape')setTimeout(stopWalk,0);if(e.code.startsWith('Arrow')||e.code==='Space')e.preventDefault();});
  addEventListener('keyup',e=>{WK.keys[e.code]=false;});
  let lk=null;look.addEventListener('pointerdown',e=>{lk={id:e.pointerId,x:e.clientX,y:e.clientY};look.setPointerCapture(e.pointerId);});
- look.addEventListener('pointermove',e=>{if(!lk||lk.id!==e.pointerId)return;WK.lookT=performance.now();const dx=e.clientX-lk.x,dy=e.clientY-lk.y;lk.x=e.clientX;lk.y=e.clientY;WK.yaw-=dx*.005;WK.pitch=Math.max(-1.1,Math.min(.9,WK.pitch-dy*.004));});
+ look.addEventListener('pointermove',e=>{if(!lk||lk.id!==e.pointerId||WK.tour&&TS.ph==='overview')return;WK.lookT=performance.now();const dx=e.clientX-lk.x,dy=e.clientY-lk.y;lk.x=e.clientX;lk.y=e.clientY;WK.yaw-=dx*.005;WK.pitch=Math.max(-1.1,Math.min(.9,WK.pitch-dy*.004));});
  const endLk=e=>{if(lk&&lk.id===e.pointerId)lk=null;};look.addEventListener('pointerup',endLk);look.addEventListener('pointercancel',endLk);
- look.addEventListener('wheel',e=>{e.preventDefault();WK.dist=Math.max(1.8,Math.min(12,WK.dist*(e.deltaY>0?1.1:.9)));},{passive:false});
+ look.addEventListener('wheel',e=>{e.preventDefault();if(WK.tour&&TS.ph==='overview')window.WALKZOOM(e.deltaY<0?1:-1);else WK.dist=Math.max(1.8,Math.min(12,WK.dist*(e.deltaY>0?1.1:.9)));},{passive:false});
+ let pinchDist=0;const touchGap=e=>Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+ look.addEventListener('touchstart',e=>{if(WK.tour&&TS.ph==='overview'&&e.touches.length===2)pinchDist=touchGap(e);},{passive:true});
+ look.addEventListener('touchmove',e=>{if(!WK.tour||TS.ph!=='overview'||e.touches.length!==2)return;e.preventDefault();const gap=touchGap(e);if(pinchDist>0&&gap>0)window.WALKZOOM(Math.log(gap/pinchDist)/Math.log(1.25));pinchDist=gap;},{passive:false});
+ look.addEventListener('touchend',e=>{if(e.touches.length<2)pinchDist=0;},{passive:true});
  let jp=null;const R0=46;const jm=e=>{if(jp!==e.pointerId)return;const r=joy.getBoundingClientRect();let dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);const d=Math.hypot(dx,dy);if(d>R0){dx*=R0/d;dy*=R0/d;}knob.style.transform=`translate(${dx}px,${dy}px)`;WK.joy=[dx/R0,dy/R0];};
  joy.addEventListener('pointerdown',e=>{jp=e.pointerId;joy.setPointerCapture(e.pointerId);jm(e);});
  joy.addEventListener('pointermove',jm);const je=e=>{if(jp!==e.pointerId)return;jp=null;WK.joy=[0,0];knob.style.transform='';};joy.addEventListener('pointerup',je);joy.addEventListener('pointercancel',je);
  const dir=new THREE.Vector3();
  window.WALK=WK;
  const setFov=()=>{cam.fov=WK.on?(WK.fp?WK.fovF:WK.fovT):35;cam.near=WK.on?.1:.5;cam.updateProjectionMatrix();};WK.fovF=92;WK.fovT=62;
- window.WALKZOOM=d=>{if(WK.fp){WK.fovF=Math.max(45,Math.min(95,WK.fovF-d*8));setFov();}else WK.dist=Math.max(1.8,Math.min(14,WK.dist*(d>0?.8:1.25)));};
+ window.WALKZOOM=d=>{if(WK.tour){if(TS.ph!=='overview'||!TS.over)return;const v=TS.over.p.clone().sub(TS.over.t),old=v.length(),dist=Math.max(7,Math.min(150,old*Math.pow(.8,d)));TS.over.p.copy(TS.over.t).addScaledVector(v,dist/old);return;}
+  if(WK.fp){WK.fovF=Math.max(45,Math.min(95,WK.fovF-d*8));setFov();}else WK.dist=Math.max(1.8,Math.min(14,WK.dist*(d>0?.8:1.25)));};
  const needle=document.getElementById('navNeedle');
  // câmera não atravessa mezanino, teto ou paredes internas: se algo grande estiver entre o boneco e a câmera, ela chega mais perto
  const chRc=new THREE.Raycaster(),chP=new THREE.Vector3(),chD=new THREE.Vector3();let chI=-1,chL=[],chT=0;
@@ -2037,9 +2039,9 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
    for(let j=1;j<cells.length;j++){const d=dir(cells[j-1],cells[j]);if(last&&(d[0]!==last[0]||d[1]!==last[1]))out.push(pos(cells[j-1]));last=d;}out.push(pos(goal));
    const end=out[out.length-1],dist=end.distanceTo(b);if(dist>.01){let clear=true;for(let t=0;t<=dist;t+=.4){const p=end.clone().lerp(b,t/dist);if(blockedWorld(p)){clear=false;break;}}if(clear&&!blockedWorld(b))out.push(b.clone());}TS.routeMode=fence?'portas e cercas':'portas';return out;}
   TS.routeMode='sem caminho';return [];}
- function stageStop(){const [nm]=TSTOPS[TS.i],i=stopIdx(nm),dest=tourDoor(nm);TS.wp=tourRoute(TS.lead.pos,dest);TS.wi=0;TS.ph='walk';TS.t=0;TS.bi=i;tCard.hidden=true;if(!TS.wp.length){TS.ph='overview';showTourOverview(i);}}
+ function stageStop(){const [nm]=TSTOPS[TS.i],i=stopIdx(nm),dest=tourDoor(nm);TS.wp=tourRoute(TS.lead.pos,dest);TS.wi=0;TS.ph='walk';TS.t=0;TS.bi=i;tCard.hidden=true;if(nav){nav.classList.remove('tourZoom');nav.style.display='none';}if(!TS.wp.length){TS.ph='overview';showTourOverview(i);}}
  function showTourOverview(i){if(i<0)return;enterProd(i);hExit.hidden=true;pInfo.hidden=true;lay.style.display='none';MARKS.forEach(m=>m.visible=false);const [x1,y1,x2,y2]=PROD[i].b,cx=wx((x1+x2)/2),cz=wz((y1+y2)/2),D=Math.max(x2-x1,y2-y1)*K;
-  TS.over={p:new THREE.Vector3(cx+D*.1,Math.max(22,D*.95+9),cz+D*.25),t:new THREE.Vector3(cx,.7,cz)};setTalk(TSTOPS[TS.i][1]);document.getElementById('tourNext').textContent=TS.i===TSTOPS.length-1?'Concluir visita ✔':'Próxima parada ▶';}
+  TS.over={p:new THREE.Vector3(cx+D*.1,Math.max(22,D*.95+9),cz+D*.25),t:new THREE.Vector3(cx,.7,cz)};if(nav){nav.classList.add('tourZoom');nav.style.display='';}setTalk(TSTOPS[TS.i][1]);document.getElementById('tourNext').textContent=TS.i===TSTOPS.length-1?'Concluir visita ✔':'Próxima parada ▶';}
  function trailTarget(lag){let left=lag;for(let j=TS.trail.length-1;j>0;j--){const a=TS.trail[j],b=TS.trail[j-1],d=a.distanceTo(b);if(left<=d)return a.clone().lerp(b,d?left/d:0);left-=d;}return TS.trail[0].clone();}
  function placeGroup(snap){if(snap){TS.trail=[];for(let j=36;j>=0;j--)TS.trail.push(new THREE.Vector3(TS.lead.pos.x-Math.sin(TS.fy)*j*.4,0,TS.lead.pos.z-Math.cos(TS.fy)*j*.4));}
   TG.forEach((p,k)=>{if(!k)return;p.tgt=trailTarget(k*1.2);if(snap)p.pos.copy(p.tgt);});}
@@ -2062,7 +2064,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
    tourInstances=S.children.filter(o=>o.isInstancedMesh&&o.visible);tourInstances.forEach(o=>o.visible=false);}
   else if(!on&&tourLight){sun.intensity=tourLight.sun;hemi.intensity=tourLight.hemi;R.toneMappingExposure=tourLight.ex;tourLight=null;tourInstances.forEach(o=>o.visible=true);tourInstances=[];}}
  function tourScreenBase(){const g=prodCache[tourAud],sc=g&&g.userData.tourScreen;if(g&&g.userData.tourCurtain)g.userData.tourCurtain.visible=false;if(sc){sc.material.map=g.userData.tourScreenBase;sc.material.emissiveMap=g.userData.tourScreenBase;sc.material.emissiveIntensity=.7;sc.material.needsUpdate=true;}}
- function showSlide(){const g=prodCache[tourAud],sc=g&&g.userData.tourScreen;if(sc){sc.material.map=HISTORY_TEX[TS.slide];sc.material.emissiveMap=HISTORY_TEX[TS.slide];sc.material.emissiveIntensity=1.5;sc.material.needsUpdate=true;}if(g&&g.userData.tourCurtain)g.userData.tourCurtain.visible=true;
+ function showSlide(){const g=prodCache[tourAud],sc=g&&g.userData.tourScreen;if(sc){sc.material.map=HISTORY_TEX[TS.slide];sc.material.emissiveMap=HISTORY_TEX[TS.slide];sc.material.emissiveIntensity=1.5;sc.material.needsUpdate=true;}if(g&&g.userData.tourCurtain)g.userData.tourCurtain.visible=true;if(nav){nav.classList.remove('tourZoom');nav.style.display='none';}
   if(TS.slideCam)TS.slideCam.p.x=wx((PROD[tourAud].b[0]+PROD[tourAud].b[2])/2)+(TS.slide?5:1);
   TS.ph='slides';TS.t=0;setTalk(HISTORY[TS.slide][0]+' — '+HISTORY[TS.slide][1]);document.getElementById('tourNext').textContent=TS.slide===HISTORY.length-1?'Começar caminhada ▶':'Próximo slide ▶';}
  function cutToWalk(){tourScreenBase();tourDark(false);exitProd(false);lay.style.display='none';const d=tourDoor('Anfiteatro Palestra');TS.lead.pos.copy(d);TS.lead.pos.x-=10;TS.fy=TS.lead.yaw=-Math.PI/2;TG.forEach(p=>{p.pos.y=0;if(p.g){p.g.position.y=0;p.lg.forEach(l=>l.rotation.x=0);p.ar.forEach(a=>a.rotation.x=0);}});placeGroup(true);av.visible=!WK.fp;TS.i=0;WK.tl=null;stageStop();}
@@ -2079,7 +2081,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
    const P=PROD[tourAud],cx=wx((P.b[0]+P.b[2])/2),cz=wz((P.b[1]+P.b[3])/2),seats=[[6,-1.3],[6,-.4],[6,.5],[6,1.4],[4.9,-1.3],[4.9,-.4],[4.9,.5],[4.9,1.4]];
    TG.forEach((p,k)=>{const [x,z]=seats[k];p.pos.set(cx+x,k===TG.length-1?0:-.54,cz+z);p.yaw=Math.PI/2;if(p.g){p.lg.forEach(l=>l.rotation.x=-1.15);p.ar.forEach(a=>a.rotation.x=-.35);p.g.position.copy(p.pos);p.g.rotation.y=p.yaw;}});
    TS.slideCam={p:new THREE.Vector3(cx+1,3.1,cz+1.4),t:new THREE.Vector3(cx+13.5,2.2,cz)};cam.position.copy(TS.slideCam.p);WK.tl=TS.slideCam.t.clone();showSlide();fade(false);},500);}
- function endTour(done){tourToken++;tourScreenBase();tourDark(false);exitProd(false);fade(false);busy=false;ui.classList.remove('touring');if(nav)nav.style.display='';document.getElementById('tourNext').textContent='Próxima parada ▶';WK.tour=false;WK.tm=0;WK.tcam=null;TS.ph='';tCard.hidden=true;if(TG)TG.forEach(p=>p.g&&S.remove(p.g));TG=null;av.visible=WK.on&&!WK.fp;MARKS.forEach(m=>m.visible=WK.on);document.getElementById('bTour').lastChild.textContent=' 🎟 Iniciar visita';}
+ function endTour(done){tourToken++;tourScreenBase();tourDark(false);exitProd(false);fade(false);busy=false;ui.classList.remove('touring');if(nav){nav.classList.remove('tourZoom');nav.style.display='';}document.getElementById('tourNext').textContent='Próxima parada ▶';WK.tour=false;WK.tm=0;WK.tcam=null;TS.ph='';tCard.hidden=true;if(TG)TG.forEach(p=>p.g&&S.remove(p.g));TG=null;av.visible=WK.on&&!WK.fp;MARKS.forEach(m=>m.visible=WK.on);document.getElementById('bTour').lastChild.textContent=' 🎟 Iniciar visita';}
  document.getElementById('tourNext').onclick=()=>nextStop();document.getElementById('tourEnd').onclick=()=>endTour(false);
  document.getElementById('bTour').onclick=()=>WK.tour?endTour(false):startTour();
  {const sw=stopWalk;window.__stopWalkT=()=>{endTour(false);};}
@@ -2124,13 +2126,14 @@ if(C){const $=id=>document.getElementById(id),pan=$('navPan'),tilt=$('navTilt'),
  addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.key==='n'||e.key==='N')setAng(0,null);if(e.key==='+'||e.key==='=')zoomBy(.6);if(e.key==='-')zoomBy(-.6);});}
 {const h=document.getElementById('hint');const touch=matchMedia('(pointer:coarse)').matches;h.innerHTML=touch?'<b>1 dedo</b> arrasta o mapa · <b>2 dedos</b> aproximam e giram · <b>toque duplo</b> aproxima':'<b>Arrastar</b> move o mapa · <b>Shift</b> ou <b>botão direito</b> gira e inclina · <b>Ctrl</b> olha ao redor · <b>roda</b> aproxima onde está o mouse';
  let hid=false;const hide=()=>{if(hid)return;hid=true;setTimeout(()=>h.style.opacity=0,2500);};R.domElement.addEventListener('pointerdown',hide);R.domElement.addEventListener('wheel',hide,{passive:true});}
-// menu compacto no celular: botões principais na barra e o resto numa janela com rolagem vertical
-{const bar=document.querySelector('.bar'),fo=document.querySelector('.focos'),bm=document.getElementById('bMenu');
- if(matchMedia('(max-width:640px)').matches){for(const id of ['bTour','bWalk','bDN']){const b=document.getElementById(id);if(b){b.classList.add('main');bar.insertBefore(b,bm);}}
-  const place=()=>document.documentElement.style.setProperty('--mt',(bar.getBoundingClientRect().bottom+6)+'px');place();addEventListener('resize',place);
-  bm.onclick=e=>{e.stopPropagation();place();fo.classList.toggle('open');bm.textContent=fo.classList.contains('open')?'✕ Fechar':'☰ Menu';};
-  fo.addEventListener('click',e=>{if(e.target.closest('button')){fo.classList.remove('open');bm.textContent='☰ Menu';}});
-  document.addEventListener('pointerdown',e=>{if(fo.classList.contains('open')&&!fo.contains(e.target)&&e.target!==bm){fo.classList.remove('open');bm.textContent='☰ Menu';}});}}
+// No celular, todos os atalhos ficam em um painel lateral com rolagem.
+{const fo=document.querySelector('.focos'),bm=document.getElementById('bMenu');
+ fo.appendChild(document.getElementById('bTag'));const closeBtn=document.createElement('button');closeBtn.id='menuClose';closeBtn.textContent='✕ Fechar';fo.prepend(closeBtn);bm.setAttribute('aria-expanded','false');bm.setAttribute('aria-controls','mobileMenu');fo.id='mobileMenu';
+  const close=()=>{fo.classList.remove('open');document.body.classList.remove('mobile-menu-open');bm.setAttribute('aria-expanded','false');bm.textContent='☰ Menu';};
+  bm.onclick=e=>{e.stopPropagation();if(fo.classList.contains('open'))close();else{fo.classList.add('open');document.body.classList.add('mobile-menu-open');bm.setAttribute('aria-expanded','true');bm.textContent='✕ Fechar';}};
+  fo.addEventListener('click',e=>{if(e.target.closest('button'))close();});
+  document.addEventListener('pointerdown',e=>{if(fo.classList.contains('open')&&!fo.contains(e.target)&&e.target!==bm)close();});
+  addEventListener('keydown',e=>{if(e.key==='Escape')close();});}
 // desempenho: junta as peças paradas (prédios, ruas, cercas...) em poucos blocos por material e por região,
 // mantendo separado o que se mexe ou some (carros, pessoas, cancela, vapor, telhados que abrem, marcadores)
 function mergeStatic(){S.updateMatrixWorld(true);
