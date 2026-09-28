@@ -773,6 +773,9 @@ tree(1157,221,2.6);tree(1192,244,2.8);
    const bx=x+g,by=r*rh+g,bw=w-g*2,bh=rh-g*2,rr=5;c.beginPath();c.moveTo(bx+rr,by);c.lineTo(bx+bw-rr,by);c.quadraticCurveTo(bx+bw,by,bx+bw,by+rr);c.lineTo(bx+bw,by+bh-rr);c.quadraticCurveTo(bx+bw,by+bh,bx+bw-rr,by+bh);c.lineTo(bx+rr,by+bh);c.quadraticCurveTo(bx,by+bh,bx,by+bh-rr);c.lineTo(bx,by+rr);c.quadraticCurveTo(bx,by,bx+rr,by);c.fill();
    c.fillStyle='rgba(255,255,255,.12)';c.fillRect(bx+3,by+2,bw-6,2);c.fillStyle='rgba(0,0,0,.18)';c.fillRect(bx+2,by+bh-3,bw-4,2);x+=w;}}});
  pT.repeat.set(L/2.2,W/2.2);
+ // as duas ruas dos lados do canteiro com postes (ADM / Cosmético 2) também em paralelepípedo
+ for(const [cx,y0,y1] of [[1168,300,644],[1191.5,289,644]]){const Lz=(y1-y0)*K,t=pT.clone();t.needsUpdate=true;t.repeat.set(12*K/2.2,Lz/2.2);
+  const pl=new THREE.Mesh(new THREE.PlaneGeometry(12*K,Lz),new THREE.MeshStandardMaterial({map:t,roughness:.85}));pl.rotation.x=-Math.PI/2;pl.position.set(wx(cx),.04,wz((y0+y1)/2));pl.receiveShadow=true;S.add(pl);}
  // duas ruas de paralelepípedo entre a Minas Cor e a GUN Brindes, lado a lado, com canteiro fino no meio
  {const y0=302,y1=633.5,Lz=(y1-y0)*K,cm2=M(0xcfccc2,{roughness:.9});for(const cx of [981.7,997.3]){const t=pT.clone();t.needsUpdate=true;t.repeat.set(11*K/2.2,Lz/2.2);
    const pl=new THREE.Mesh(new THREE.PlaneGeometry(11*K,Lz),new THREE.MeshStandardMaterial({map:t,roughness:.85}));pl.rotation.x=-Math.PI/2;pl.position.set(wx(cx),.035,wz((y0+y1)/2));pl.receiveShadow=true;S.add(pl);}
