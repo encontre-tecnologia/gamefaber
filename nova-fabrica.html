@@ -200,7 +200,10 @@ const PERIMD=[[869,291],[706.8,291]],PERIME=[[693.2,291],[650,291],[650,120],[64
 const PERIMS=[PERIMA,PERIM,PERIMC,PERIMD,PERIME];
 // faixa de circulação dentro do estacionamento (do portão até a rua de pedra)
 const LANE=[[749,30],[749,60],[745,146],[754,198],[792,227],[849,246],[921,262]];
-const noPark=(x,y)=>nearLine(LANE,x,y,11)||Math.hypot(x-906,y-94)<9;
+// vagas fora da cerca (canto da rotatória) e a área das motos não recebem carro
+const fenceN=(x,y)=>{for(let i=0;i<PERIMA.length-1;i++){const [ax,ay]=PERIMA[i],[bx,by]=PERIMA[i+1];if(x>=Math.min(ax,bx)&&x<=Math.max(ax,bx)&&ax!==bx&&Math.max(ax,bx)<935){const fy=ay+(by-ay)*(x-ax)/(bx-ax);if(y<fy+6)return true;}}return false;};
+const MOTO=[664,60,736,97],inMoto=(x,y)=>x>MOTO[0]-2&&x<MOTO[2]+2&&y>MOTO[1]-2&&y<MOTO[3]+2;
+const noPark=(x,y)=>nearLine(LANE,x,y,11)||Math.hypot(x-906,y-94)<9||fenceN(x,y)||fenceN(x,y+8)||inMoto(x,y)||inMoto(x,y+8);
 const WEDGE=[[1169,221],[1226,253],[1213,261],[1203,272],[1198.5,289],[1169,289]];
 const NORTEROAD=[[904,38],[872,-20],[836,-105],[800,-190],[762,-265],[742,-320],[728,-420]];
 function nearLine(pts,x,y,d){for(let i=0;i<pts.length-1;i++){const [ax,ay]=pts[i],[bx,by]=pts[i+1],dx=bx-ax,dy=by-ay;let t=((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy);t=Math.max(0,Math.min(1,t));if(Math.hypot(ax+t*dx-x,ay+t*dy-y)<d)return true;}return false;}
@@ -224,6 +227,9 @@ poly(YARD,'#5f812e');g.save();g.beginPath();YARD.forEach(([x,y],i)=>i?g.lineTo(x
 g.strokeStyle='#b09b72';g.lineWidth=5;g.globalAlpha=.8;g.beginPath();g.moveTo(545,650);g.bezierCurveTo(530,760,555,880,545,990);g.stroke();g.beginPath();g.moveTo(1400,700);g.bezierCurveTo(1330,800,1260,880,1232,980);g.stroke();
 g.beginPath();g.moveTo(1170,970);g.lineTo(1150,1086);g.stroke();g.globalAlpha=1;
 poly(PARK,'#5e6163');
+{g.save();g.strokeStyle='#f2c230';g.lineWidth=.7;g.strokeRect(MOTO[0],MOTO[1],MOTO[2]-MOTO[0],MOTO[3]-MOTO[1]);g.strokeStyle='#e6e2d4';g.lineWidth=.5;
+ for(const [y0,y1] of [[61,71],[86,96]])for(let x=MOTO[0]+2;x<=MOTO[2]-1;x+=4){g.beginPath();g.moveTo(x,y0);g.lineTo(x,y1);g.stroke();}
+ g.fillStyle='#f2c230';g.font='bold 5.5px system-ui,sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('MOTOS',(MOTO[0]+MOTO[2])/2,78.5);g.restore();}
 g.strokeStyle='#dcd8cb';g.lineWidth=.8;for(let r=-2;r<8;r++){const y=108+r*22;for(let x=662;x<918;x+=7){if(!inPoly(PARK,x,y)||!inPoly(PARK,x,y+8)||(y<0)||noPark(x,y+4))continue;g.beginPath();g.moveTo(x,y);g.lineTo(x,y+8);g.stroke();}}
 {g.save();g.lineCap='round';g.lineJoin='round';g.strokeStyle='#5e6163';g.lineWidth=20;g.beginPath();LANE.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.stroke();g.strokeStyle='#e6e2d4';g.lineWidth=.7;g.setLineDash([5,6]);g.stroke();g.setLineDash([]);g.restore();}
 g.lineCap='round';g.lineJoin='round';
@@ -1054,7 +1060,22 @@ function carMesh(c){const g=new THREE.Group(),m=new THREE.MeshStandardMaterial({
  const bx2=(w,h,d,mat,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o;};
  bx2(1.15,.42,2.6,m,0,.42,0);bx2(1,.34,1.3,m,0,.82,-.12);bx2(1.04,.22,1.36,carGlass.material,0,.8,-.12);bx2(1,.08,.04,carLite.material,0,.5,-1.31);bx2(1,.08,.04,new THREE.MeshStandardMaterial({color:0xfff6d8,emissive:0x8a8060}),0,.5,1.31);
  for(const sx of [-.55,.55])for(const sz of [-.85,.85]){const w=new THREE.Mesh(carWheel.geometry,carWheel.material);w.rotation.z=Math.PI/2;w.position.set(sx,.21,sz);g.add(w);}return g;}
-for(let r=-2;r<8;r++){const y=108+r*22+4;for(let x=665;x<916;x+=7){if(!inPoly(PARK,x,y-4)||!inPoly(PARK,x,y+8)||(y<0)||noPark(x+3.5,y)||Math.random()<.2)continue;if(Math.random()<.08){for(let k=0;k<3;k++){const mo=motoMesh(pal[Math.floor(Math.random()*pal.length)]);mo.position.set(wx(x+1.2+k*2.3),0,wz(y));mo.rotation.y=rnd(-.15,.15);S.add(mo);}continue;}car(x+3.5,y,rnd(-.06,.06));}}
+for(let r=-2;r<8;r++){const y=108+r*22+4;for(let x=665;x<916;x+=7){if(!inPoly(PARK,x,y-4)||!inPoly(PARK,x,y+8)||(y<0)||noPark(x+3.5,y)||Math.random()<.2)continue;car(x+3.5,y,rnd(-.06,.06));}}
+// estacionamento de motos coberto, com placa e aviso de velocidade
+{for(const [y0,dir] of [[66,0],[91,Math.PI]])for(let x=MOTO[0]+4;x<=MOTO[2]-2;x+=4){if(Math.random()<.22)continue;const mo=motoMesh(pal[Math.floor(Math.random()*pal.length)]);mo.position.set(wx(x),0,wz(y0));mo.rotation.y=dir+rnd(-.08,.08);S.add(mo);}
+ const post=M(0x8d9497,{metalness:.6,roughness:.4}),roofM=M(0xd6d9d8,{metalness:.5,roughness:.45}),[x0,y0,x1,y1]=MOTO,W=(x1-x0)*K,D=(y1-y0)*K,cx=wx((x0+x1)/2),cz=wz((y0+y1)/2);
+ for(const z of [wz(y0)+.3,wz(y1)-.3])for(let x=wx(x0)+.4;x<=wx(x1)-.3;x+=W/4){const p=new THREE.Mesh(new THREE.BoxGeometry(.12,2.7,.12),post);p.position.set(x,1.35,z);p.castShadow=true;S.add(p);}
+ {const r=new THREE.Mesh(new THREE.BoxGeometry(W+.6,.08,D+.6),roofM);r.position.set(cx,2.75,cz);r.rotation.x=.05;r.castShadow=r.receiveShadow=true;S.add(r);
+  for(let x=-W/2;x<=W/2+.01;x+=1.1){const q=new THREE.Mesh(new THREE.BoxGeometry(.1,.06,D+.6),roofM);q.position.set(cx+x,2.82,cz);q.rotation.x=.05;S.add(q);}}
+ const sign=(px,py,ry,draw,w,h)=>{const T=mkTex(256,Math.round(256*h/w),draw),g2=new THREE.Group();g2.position.set(wx(px),0,wz(py));g2.rotation.y=ry;S.add(g2);
+  for(const sx of [-w/2+.12,w/2-.12]){const p=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,1.3+h,8),post);p.position.set(sx,(1.3+h)/2,-.03);g2.add(p);}
+  const f=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:T,roughness:.6}));f.position.set(0,1.3+h/2,0);g2.add(f);
+  const bk=new THREE.Mesh(new THREE.PlaneGeometry(w,h),M(0x9aa0a3));bk.rotation.y=Math.PI;bk.position.set(0,1.3+h/2,-.01);g2.add(bk);};
+ const moto=(c,x,y,s2)=>{c.lineWidth=7*s2;c.strokeStyle='#fff';c.fillStyle='#fff';for(const dx of [-38,38]){c.beginPath();c.arc(x+dx*s2,y,17*s2,0,7);c.stroke();}
+  c.beginPath();c.moveTo(x-38*s2,y);c.lineTo(x-8*s2,y-22*s2);c.lineTo(x+22*s2,y-22*s2);c.lineTo(x+38*s2,y);c.stroke();c.fillRect(x-18*s2,y-34*s2,34*s2,10*s2);c.beginPath();c.moveTo(x+22*s2,y-22*s2);c.lineTo(x+30*s2,y-44*s2);c.lineTo(x+44*s2,y-46*s2);c.stroke();};
+ sign(740,57,Math.PI/2,(c,Wc,Hc)=>{c.fillStyle='#1f5aa6';c.fillRect(0,0,Wc,Hc);c.strokeStyle='#fff';c.lineWidth=8;c.strokeRect(10,10,Wc-20,Hc-20);moto(c,Wc/2,Hc*.42,1.35);c.fillStyle='#fff';c.font='800 34px system-ui,sans-serif';c.textAlign='center';c.fillText('MOTOS',Wc/2,Hc*.82);},1.3,1.3);
+ sign(760,72,-Math.PI/2,(c,Wc,Hc)=>{c.fillStyle='#fff';c.fillRect(0,0,Wc,Hc);c.beginPath();c.arc(Wc/2,Hc/2,Wc/2-8,0,7);c.fillStyle='#fff';c.fill();c.lineWidth=30;c.strokeStyle='#d32f2f';c.stroke();c.fillStyle='#111';c.font='800 92px system-ui,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('10',Wc/2,Hc/2-14);c.font='700 34px system-ui,sans-serif';c.fillText('km/h',Wc/2,Hc/2+52);},.8,.8);
+ sign(745,285,0,(c,Wc,Hc)=>{c.fillStyle='#1f5aa6';c.fillRect(0,0,Wc,Hc);c.fillStyle='#fff';c.font='800 30px system-ui,sans-serif';c.textAlign='center';c.fillText('↑ MOTOS',Wc/2,Hc*.38);c.fillText('↑ SAÍDA',Wc/2,Hc*.75);},1.4,.8);}
 
 carBody.count=carTop.count=carGlass.count=carLite.count=ci;carWheel.count=ci*4;S.add(carBody,carTop,carGlass,carWheel,carLite);
 {const poleM=M(0x8f969a,{metalness:.6,roughness:.4}),lampM=M(0xfff6dc,{emissive:lin(0xfff1c0),emissiveIntensity:.9});
