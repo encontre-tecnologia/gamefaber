@@ -774,10 +774,10 @@ tree(1157,221,2.6);tree(1192,244,2.8);
    c.fillStyle='rgba(255,255,255,.12)';c.fillRect(bx+3,by+2,bw-6,2);c.fillStyle='rgba(0,0,0,.18)';c.fillRect(bx+2,by+bh-3,bw-4,2);x+=w;}}});
  pT.repeat.set(L/2.2,W/2.2);
  // duas ruas de paralelepípedo entre a Minas Cor e a GUN Brindes, lado a lado, com canteiro fino no meio
- {const y0=302,y1=633.5,Lz=(y1-y0)*K,cm2=M(0xcfccc2,{roughness:.9});for(const cx of [982.5,996.5]){const t=pT.clone();t.needsUpdate=true;t.repeat.set(8*K/2.2,Lz/2.2);
-   const pl=new THREE.Mesh(new THREE.PlaneGeometry(8*K,Lz),new THREE.MeshStandardMaterial({map:t,roughness:.85}));pl.rotation.x=-Math.PI/2;pl.position.set(wx(cx),.035,wz((y0+y1)/2));pl.receiveShadow=true;S.add(pl);}
-  for(const x of [978.3,986.7,992.3,1000.7]){const cb=new THREE.Mesh(new THREE.BoxGeometry(.28,.14,Lz),cm2);cb.position.set(wx(x),.07,wz((y0+y1)/2));cb.receiveShadow=true;S.add(cb);}
-  const gr=new THREE.Mesh(new THREE.PlaneGeometry(5.3*K,Lz),M(0x7ba845,{roughness:1}));gr.rotation.x=-Math.PI/2;gr.position.set(wx(989.5),.045,wz((y0+y1)/2));gr.receiveShadow=true;S.add(gr);}
+ {const y0=302,y1=633.5,Lz=(y1-y0)*K,cm2=M(0xcfccc2,{roughness:.9});for(const cx of [981.7,997.3]){const t=pT.clone();t.needsUpdate=true;t.repeat.set(11*K/2.2,Lz/2.2);
+   const pl=new THREE.Mesh(new THREE.PlaneGeometry(11*K,Lz),new THREE.MeshStandardMaterial({map:t,roughness:.85}));pl.rotation.x=-Math.PI/2;pl.position.set(wx(cx),.035,wz((y0+y1)/2));pl.receiveShadow=true;S.add(pl);}
+  for(const x of [976.2,987.2,991.8,1002.8]){const cb=new THREE.Mesh(new THREE.BoxGeometry(.28,.14,Lz),cm2);cb.position.set(wx(x),.07,wz((y0+y1)/2));cb.receiveShadow=true;S.add(cb);}
+  const gr=new THREE.Mesh(new THREE.PlaneGeometry(4.3*K,Lz),M(0x7ba845,{roughness:1}));gr.rotation.x=-Math.PI/2;gr.position.set(wx(989.5),.045,wz((y0+y1)/2));gr.receiveShadow=true;S.add(gr);}
  const st=new THREE.Mesh(new THREE.PlaneGeometry(L,W),new THREE.MeshStandardMaterial({map:pT,roughness:.85}));st.rotation.x=-Math.PI/2;st.position.set(wx((x0+x1)/2),.035,wz(y));st.receiveShadow=true;S.add(st);
  const cm=M(0xcfccc2,{roughness:.9});for(const sz of [-1,1]){const cb=new THREE.Mesh(new THREE.BoxGeometry(L+.3,.14,.3),cm);cb.position.set(wx((x0+x1)/2),.07,wz(y)+sz*(W/2+.15));cb.receiveShadow=true;S.add(cb);}
 }
@@ -879,18 +879,10 @@ for(const gx of [921,1154]){const g=new THREE.Group();g.position.set(wx(gx),0,wz
  for(const x of [-W/2+.3,W/2-.3,0]){const q=new THREE.Mesh(new THREE.BoxGeometry(.08,Y+H,.08),fr);q.position.set(x,(Y+H)/2,-.08);q.castShadow=true;g.add(q);}}
 
 // postes de luz no canteiro entre as duas ruas de pedra (braço duplo, uma luminária sobre cada rua)
-window.LGLOW=[];{const pm=M(0x6f7775,{metalness:.6,roughness:.4}),hm=M(0x2f3433,{metalness:.5,roughness:.5}),lm=new THREE.MeshStandardMaterial({color:0xfff4d6,emissive:0xffd9a0,emissiveIntensity:.35});
- const gT=mkTex(128,128,(c,W,H)=>{const g=c.createRadialGradient(W/2,H/2,0,W/2,H/2,W/2);g.addColorStop(0,'rgba(255,220,160,1)');g.addColorStop(1,'rgba(255,220,160,0)');c.fillStyle=g;c.fillRect(0,0,W,H);});
- for(const y of [322,426,497,575,622]){const g=new THREE.Group();g.position.set(wx(989.5),0,wz(y));S.add(g);
-  const bs=new THREE.Mesh(new THREE.CylinderGeometry(.16,.2,.4,10),pm);bs.position.y=.2;g.add(bs);
-  const po=new THREE.Mesh(new THREE.CylinderGeometry(.07,.1,6.6,10),pm);po.position.y=3.3;po.castShadow=true;g.add(po);
-  for(const sx of [-1,1]){const ar=new THREE.Mesh(new THREE.BoxGeometry(1.5,.07,.07),pm);ar.position.set(sx*.75,6.45,0);ar.rotation.z=-sx*.12;g.add(ar);
-   const hd=new THREE.Mesh(new THREE.BoxGeometry(.62,.14,.3),hm);hd.position.set(sx*1.5,6.5,0);hd.castShadow=true;g.add(hd);
-   const ln=new THREE.Mesh(new THREE.BoxGeometry(.5,.03,.22),lm);ln.position.set(sx*1.5,6.42,0);g.add(ln);
-   const gl=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.MeshBasicMaterial({map:gT,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));gl.rotation.x=-Math.PI/2;gl.position.set(sx*1.75,.06,0);g.add(gl);window.LGLOW.push(gl.material);}}}
+window.LGLOW=[];
 
 // postes de concreto da rede elétrica com fios, transformador e luminárias de braço duplo (canteiro entre as ruas da ADM e do Cosmético 2)
-{const X=wx(1179.8),YS=[315,366,417,468,519,570,620],con=M(0xbdb6a8,{roughness:.9}),arm=M(0x9a948a,{roughness:.85}),ins=M(0x5b4a3a,{roughness:.5}),stl=M(0x9aa1a4,{metalness:.7,roughness:.35}),tr=M(0x8e9699,{metalness:.5,roughness:.45}),wire=M(0x1c1d1e,{roughness:.6}),
+function utilLine(XP,YS,reach,drops){const X=wx(XP),con=M(0xbdb6a8,{roughness:.9}),arm=M(0x9a948a,{roughness:.85}),ins=M(0x5b4a3a,{roughness:.5}),stl=M(0x9aa1a4,{metalness:.7,roughness:.35}),tr=M(0x8e9699,{metalness:.5,roughness:.45}),wire=M(0x1c1d1e,{roughness:.6}),
   lm=new THREE.MeshStandardMaterial({color:0xfff4d6,emissive:0xffd9a0,emissiveIntensity:.35});
  const gT=mkTex(128,128,(c,W,H)=>{const g=c.createRadialGradient(W/2,H/2,0,W/2,H/2,W/2);g.addColorStop(0,'rgba(255,220,160,1)');g.addColorStop(1,'rgba(255,220,160,0)');c.fillStyle=g;c.fillRect(0,0,W,H);});
  const H=11,tops=[];
@@ -901,15 +893,15 @@ window.LGLOW=[];{const pm=M(0x6f7775,{metalness:.6,roughness:.4}),hm=M(0x2f3433,
   for(const [yy,xs] of [[H-.35,[-1.15,-.4,.4,1.15]],[H-1.05,[-.8,.8]],[H-2.2,[-.6,0,.6]]])for(const x of xs){const c=new THREE.Mesh(new THREE.CylinderGeometry(.05,.07,.22,8),ins);c.position.set(x,yy+.17,0);g.add(c);}
   for(const sx of [-1,1]){const br=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,1.3,5),stl);br.position.set(sx*.5,H-.75,0);br.rotation.z=sx*.75;g.add(br);}
   // transformador em postes alternados
-  if(i%3===1){const t=new THREE.Group();t.position.set(0,H-3.6,.42);g.add(t);const cy=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.1,14),tr);cy.castShadow=true;t.add(cy);
+  if(drops.some(d=>d[0]===i)){const t=new THREE.Group();t.position.set(0,H-3.6,.42);g.add(t);const cy=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.1,14),tr);cy.castShadow=true;t.add(cy);
    const tp=new THREE.Mesh(new THREE.CylinderGeometry(.44,.44,.08,14),tr);tp.position.y=.58;t.add(tp);for(let k=0;k<8;k++){const f=new THREE.Mesh(new THREE.BoxGeometry(.04,.9,.16),tr);const a=k/8*Math.PI*2;f.position.set(Math.cos(a)*.46,0,Math.sin(a)*.46);f.rotation.y=-a;t.add(f);}
    for(const x of [-.2,0,.2]){const bu=new THREE.Mesh(new THREE.CylinderGeometry(.04,.05,.28,6),ins);bu.position.set(x,.75,0);t.add(bu);}b(.5,.08,.08,stl,0,H-3.05,.2);b(.5,.08,.08,stl,0,H-4.15,.2);}
   // luminárias de braço curvo para as duas ruas
-  for(const sx of [-1,1]){const cu=new THREE.QuadraticBezierCurve3(new THREE.Vector3(0,H-3.2,0),new THREE.Vector3(sx*1.2,H-2.2,0),new THREE.Vector3(sx*2.6,H-2.5,0));
+  for(const sx of [-1,1]){const cu=new THREE.QuadraticBezierCurve3(new THREE.Vector3(0,H-3.2,0),new THREE.Vector3(sx*reach*.46,H-2.2,0),new THREE.Vector3(sx*reach,H-2.5,0));
    const tb=new THREE.Mesh(new THREE.TubeGeometry(cu,12,.045,6,false),stl);tb.castShadow=true;g.add(tb);
-   const hd=new THREE.Mesh(new THREE.BoxGeometry(.6,.14,.26),stl);hd.position.set(sx*2.75,H-2.55,0);hd.rotation.z=-sx*.12;g.add(hd);
-   const ln=new THREE.Mesh(new THREE.BoxGeometry(.48,.03,.2),lm);ln.position.set(sx*2.75,H-2.64,0);g.add(ln);
-   const gl=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshBasicMaterial({map:gT,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));gl.rotation.x=-Math.PI/2;gl.position.set(sx*3,.07,0);g.add(gl);window.LGLOW.push(gl.material);}
+   const hd=new THREE.Mesh(new THREE.BoxGeometry(.6,.14,.26),stl);hd.position.set(sx*(reach+.15),H-2.55,0);hd.rotation.z=-sx*.12;g.add(hd);
+   const ln=new THREE.Mesh(new THREE.BoxGeometry(.48,.03,.2),lm);ln.position.set(sx*(reach+.15),H-2.64,0);g.add(ln);
+   const gl=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshBasicMaterial({map:gT,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));gl.rotation.x=-Math.PI/2;gl.position.set(sx*(reach+.4),.07,0);g.add(gl);window.LGLOW.push(gl.material);}
   tops.push(wz(y));});
  // fios entre os postes, com barriga
  const lines=[[-1.15,H-.35+.28],[-.4,H-.35+.28],[.4,H-.35+.28],[1.15,H-.35+.28],[-.8,H-1.05+.28],[.8,H-1.05+.28],[-.6,H-2.2+.28],[0,H-2.2+.28],[.6,H-2.2+.28]];
@@ -917,7 +909,9 @@ window.LGLOW=[];{const pm=M(0x6f7775,{metalness:.6,roughness:.4}),hm=M(0x2f3433,
   const cu=new THREE.QuadraticBezierCurve3(new THREE.Vector3(X+x,y,z0),new THREE.Vector3(X+x,y-sag*2,(z0+z1)/2),new THREE.Vector3(X+x,y,z1));
   const w=new THREE.Mesh(new THREE.TubeGeometry(cu,10,.018,4,false),wire);S.add(w);}
  // ramais descendo para a ADM e o Cosmético 2 a partir dos postes com transformador
- YS.forEach((y,i)=>{if(i%3!==1)return;for(const [tx,ty] of [[wx(y<440?1150:1206),wz(y)]]){const cu=new THREE.QuadraticBezierCurve3(new THREE.Vector3(X,H-2.2+.28,wz(y)),new THREE.Vector3((X+tx)/2,H-3.4,wz(y)),new THREE.Vector3(tx,5.2,ty));S.add(new THREE.Mesh(new THREE.TubeGeometry(cu,10,.016,4,false),wire));}});}
+ drops.forEach(([i,tpx])=>{const y=YS[i];for(const [tx,ty] of [[wx(tpx),wz(y)]]){const cu=new THREE.QuadraticBezierCurve3(new THREE.Vector3(X,H-2.2+.28,wz(y)),new THREE.Vector3((X+tx)/2,H-3.4,wz(y)),new THREE.Vector3(tx,5.2,ty));S.add(new THREE.Mesh(new THREE.TubeGeometry(cu,10,.016,4,false),wire));}});}
+utilLine(1179.8,[315,366,417,468,519,570,620],2.6,[[1,1150],[4,1206]]);
+utilLine(989.5,[316,362,420,490,566,622],2.05,[[2,1008],[4,962]]);
 
 // ===== dia e noite =====
 {const DAY={bg:new THREE.Color(0xc5d0cc),sun:new THREE.Color(0xfff0d8),si:2.4,hi:.5,hs:new THREE.Color(0xe4eef5),hg:new THREE.Color(0x4d5c32),ex:.9},
