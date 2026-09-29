@@ -141,6 +141,7 @@ const CHEMROADPOLES=[[1265,667],[1380,667]];
 const PARK=[[650,100],[652,62],[664,40],[684,28],[706,22],[720,25.5],[800,43],[880,60.5],[905,66],[918,72],[922,90],[920,112],[920,285],[690,285],[662,268],[650,240]];
 const RC=[915,58];
 const PAVE=[[700,296],[1160,296],[1160,640],[740,640],[740,400],[700,400]];
+const COBBLE_ACCESS=[[730,300],[866,300],[866,306],[1160,306],[1160,320],[895,320],[895,309],[730,309]];
 const MINAS_LAWN=[[752,400],[812,400],[812,622],[752,622]];
 const PAVE2=[[400,440],[560,440],[560,450],[720,450],[740,640],[400,640]];
 const CHEMPAD=[[1342,662],[1419,662],[1419,726],[1342,726]];
@@ -276,6 +277,10 @@ g.fillRect(1146,648.2,68,3.4);g.fillRect(1166.4,630,3.2,15);
 g.strokeStyle='#eceae2';g.lineWidth=.6;for(const [x0,y0,x1,y1] of [[1162.6,231.3,1172,232.4],[1162.6,236.2,1170,237.6],[1162.6,241.2,1170,242.8],[1162.6,246.2,1170,247.9],[1162.6,251.2,1170,253]]){g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();}
 g.fillStyle='#6c6f71';g.beginPath();WEDGE.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.fill();
 g.fillStyle='#c9c6ba';g.beginPath();g.arc(1192,244,6.2,0,7);g.fill();g.fillStyle='#6f9a45';g.beginPath();g.arc(1192,244,5,0,7);g.fill();
+// Rua de paralelepípedo atrás do CIC, contornando a Catraca e seguindo na frente do LAC.
+poly(COBBLE_ACCESS,'#464542');g.save();g.beginPath();COBBLE_ACCESS.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.clip();
+for(let row=0,y=299;y<322;row++,y+=2.5){for(let x=728+(row%2)*2.5;x<1162;){const w=4.2+((row*7+Math.floor(x))%4),v=130+((row*11+Math.floor(x)*3)%45);g.fillStyle=`rgb(${v},${v-4},${v-11})`;g.fillRect(x+.45,y+.35,w-.7,1.9);g.fillStyle='rgba(255,255,255,.11)';g.fillRect(x+.8,y+.45,w-1.4,.25);x+=w;}}
+g.restore();g.strokeStyle='#c9c6ba';g.lineWidth=.7;g.beginPath();COBBLE_ACCESS.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.stroke();
 for(const b of B){g.fillStyle='rgba(40,45,35,.35)';g.fillRect(b[0]-2,b[1]-2,b[2]-b[0]+4,b[3]-b[1]+4);}
 const gt=new THREE.CanvasTexture(cv);gt.encoding=THREE.sRGBEncoding;gt.anisotropy=R.capabilities.getMaxAnisotropy();
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(PW*K,PH*K),new THREE.MeshStandardMaterial({map:gt,roughness:1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;S.add(ground);
