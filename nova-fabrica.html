@@ -555,12 +555,20 @@ let doorX=0,doorZ=0;
  const k1=R1/(zr+ad/2),k2=(yr-.14-AHh)/(ad/2-zr);
  const yB=z=>AHh+k1*(z+ad/2),yS=z=>AHh+k2*(ad/2-z);
  const zE=zr+.85;
- const sec=[[-ad/2,0],[-ad/2,AHh],[zr,yr],[zr,yS(zr)],[ad/2,AHh],[ad/2,0]];
- function shp(sign){const s=new THREE.Shape();sec.forEach(([z,y],i)=>i?s.lineTo(sign*z,y):s.moveTo(sign*z,y));s.closePath();return s;}
- const body=new THREE.Mesh(new THREE.ExtrudeGeometry(shp(-1),{depth:aw,bevelEnabled:false}),M(0xcfd2cd,{roughness:.85}));body.rotation.y=Math.PI/2;body.position.set(acx-aw/2,0,acz);body.castShadow=body.receiveShadow=true;S.add(body);
+ const shell=M(0xcfd2cd,{roughness:.85}),frontZ=ad/2,porchDepth=2.05,porchZ=frontZ+porchDepth;
+ const entries=[-aw*.23,aw*.23],entryWidth=2.45;
+ const shellBox=(w,h,d,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),shell);m.position.set(acx+x,y,acz+z);m.castShadow=m.receiveShadow=true;S.add(m);return m;};
+ // Fachada sul dividida em três trechos: os dois vãos ficam livres até o piso.
+ shellBox(aw,AHh,.16,0,AHh/2,-ad/2);
+ for(const x of [-aw/2,aw/2])shellBox(.16,AHh,ad,x,AHh/2,0);
+ const cuts=[-aw/2,...entries.flatMap(x=>[x-entryWidth/2,x+entryWidth/2]),aw/2];
+ for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1];shellBox(b-a,AHh,.16,(a+b)/2,AHh/2,frontZ);}
+ for(const x of entries)shellBox(entryWidth,AHh-2.65,.16,x,(AHh+2.65)/2,frontZ);
+ const endSection=[[-ad/2,0],[-ad/2,AHh],[zr,yr],[zr,yS(zr)],[frontZ,AHh],[frontZ,0]];
+ for(const x of [-aw/2,aw/2]){const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(-z,y):sh.moveTo(-z,y));sh.closePath();const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({color:0xcfd2cd,side:THREE.DoubleSide,roughness:.85}));m.rotation.y=Math.PI/2;m.position.set(acx+x,0,acz);m.castShadow=m.receiveShadow=true;S.add(m);}
  const roofM=rmat(grayT,aw/1.2,1);
  function plate(z0,z1,y0,y1,th){const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);const m=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,th||.12,L),roofM);m.position.set(acx,(y0+y1)/2+.07,acz+(z0+z1)/2);m.rotation.x=Math.atan2(-dy,dz);m.castShadow=m.receiveShadow=true;S.add(m);return m;}
- plate(ad/2+.55,zr+.05,yS(ad/2+.55),yS(zr+.05));
+ plate(porchZ+.18,zr+.05,yS(porchZ+.18),yS(zr+.05));
  plate(-ad/2-.55,zE,yB(-ad/2-.55),yB(zE));
  {const f=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,.42,.1),roofM);f.position.set(acx,yB(zE)-.12,acz+zE+.03);f.castShadow=f.receiveShadow=true;S.add(f);}
  const frT=mkTex(512,256,(c,w,h)=>{c.fillStyle='#d9d4c8';c.fillRect(0,0,w,h);
@@ -576,13 +584,24 @@ let doorX=0,doorZ=0;
    c.fillStyle='#255a40';for(let i=1;i<4;i++)c.fillRect(40+i*47.5-2,H*.3,4,H*.48);c.fillRect(40,H*.53,190,4);c.fillStyle='rgba(0,0,0,.2)';c.fillRect(0,H*.95,W,H*.05);});
   const acM=M(0xe6e8e6,{roughness:.6}),grM=M(0x3a3f42,{roughness:.7});
   for(const sg of [-1,1]){const t=gwT.clone();t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(Math.round(aw/3.2),1);
-   const m=new THREE.Mesh(new THREE.PlaneGeometry(aw,AHh),new THREE.MeshStandardMaterial({map:t,roughness:.8}));m.rotation.y=sg>0?0:Math.PI;m.position.set(acx,AHh/2,acz+sg*(ad/2+.03));m.receiveShadow=true;S.add(m);
+   const addFace=(a,b)=>{const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=(b-a)/3.2;const m=new THREE.Mesh(new THREE.PlaneGeometry(b-a,AHh),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.rotation.y=sg>0?0:Math.PI;m.position.set(acx+(a+b)/2,AHh/2,acz+sg*(ad/2+.03));m.receiveShadow=true;S.add(m);};
+   if(sg>0){for(let i=0;i<cuts.length-1;i+=2)addFace(cuts[i],cuts[i+1]);for(const x of entries){const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=entryWidth/3.2;const h=AHh-2.65,m=new THREE.Mesh(new THREE.PlaneGeometry(entryWidth,h),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.position.set(acx+x,(AHh+2.65)/2,acz+frontZ+.035);m.receiveShadow=true;S.add(m);}}
+   else addFace(-aw/2,aw/2);
    const fa=new THREE.Mesh(new THREE.BoxGeometry(aw+.2,.35,.08),M(0x1f4a36));fa.position.set(acx,AHh+.05,acz+sg*(ad/2+.1));S.add(fa);
-   for(let x=-aw/2+3.2;x<aw/2-1;x+=6.4){const u=new THREE.Group();u.position.set(acx+x,AHh-.75,acz+sg*(ad/2+.2));u.rotation.y=sg>0?0:Math.PI;S.add(u);
+   for(let x=-aw/2+3.2;x<aw/2-1;x+=6.4){if(sg>0&&entries.some(e=>Math.abs(x-e)<entryWidth/2+1))continue;const u=new THREE.Group();u.position.set(acx+x,AHh-.75,acz+sg*(ad/2+.2));u.rotation.y=sg>0?0:Math.PI;S.add(u);
     const b=new THREE.Mesh(new THREE.BoxGeometry(.9,.6,.35),acM);b.castShadow=true;u.add(b);const f=new THREE.Mesh(new THREE.CircleGeometry(.22,16),grM);f.position.set(-.12,0,.18);u.add(f);}}
   {const t=gwT.clone();t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(Math.max(1,Math.round(ad/3.2)),1);
    const m=new THREE.Mesh(new THREE.PlaneGeometry(ad,AHh),new THREE.MeshStandardMaterial({map:t,roughness:.8}));m.rotation.y=Math.PI/2;m.position.set(acx+aw/2+.03,AHh/2,acz);m.receiveShadow=true;S.add(m);}}
- const fr=new THREE.Mesh(new THREE.ShapeGeometry(shp(1)),new THREE.MeshStandardMaterial({map:frT,roughness:.8}));fr.rotation.y=-Math.PI/2;fr.position.set(acx-aw/2-.03,0,acz);fr.receiveShadow=true;S.add(fr);
+ {const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(z,y):sh.moveTo(z,y));sh.closePath();const fr=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({map:frT,roughness:.8}));fr.rotation.y=-Math.PI/2;fr.position.set(acx-aw/2-.03,0,acz);fr.receiveShadow=true;S.add(fr);}
+ // Varanda contínua sob a nova beirada, com duas passagens alinhadas aos vãos.
+ const deck=M(0xc9c7bc,{roughness:.9}),rail=M(0x2d674a,{roughness:.55,metalness:.15}),frame=M(0xe9e9e4,{roughness:.8});
+ const porch=(w,h,d,m,x,y,z)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(acx+x,y,acz+z);q.castShadow=q.receiveShadow=true;S.add(q);};
+ porch(aw+.35,.18,porchDepth+.25,deck,0,.09,frontZ+porchDepth/2);
+ for(const x of entries){porch(entryWidth+.2,.08,.65,deck,x,.04,porchZ+.3);for(const side of [-1,1])porch(.12,2.65,.16,frame,x+side*entryWidth/2,1.325,frontZ+.08);porch(entryWidth+.15,.16,.22,frame,x,2.66,frontZ+.08);}
+ for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1];porch(b-a,.77,.12,rail,(a+b)/2,.49,porchZ-.08);porch(b-a,.08,.16,frame,(a+b)/2,.91,porchZ-.08);}
+ const eaveH=yS(porchZ);
+ for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,porchZ-.08);
+ porch(aw+.7,.27,.2,roofM,0,yS(porchZ)-.13,porchZ+.11);
 }
 {const Y1=274,Y2=300,XA=918,XM=1043,XB=1153,bd=(Y2-Y1)*K,bz=wz((Y1+Y2)/2);
  function grp(x1,x2){const g=new THREE.Group();g.position.set(wx((x1+x2)/2),0,bz);S.add(g);return [g,(x2-x1)*K];}
@@ -1915,7 +1934,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
  const SOLID=B.filter(b=>b[7]!=='Caixa de Energia');
  const blockedAt=(x,z)=>{const px=x/K+724,py=z/K+543;if(WK.inside>=0){const b=PROD[WK.inside].b;return !inR(b,px,py,-2.2);}if(px<-60||px>1500||py<-470||py>1120)return true;return SOLID.some(b=>inR(b,px,py,.5))||PROD.some(P=>inR(P.b,px,py,.5))||PERIMS.some(q=>nearLine(q,px,py,2));};
  // portas: um marcador verde na frente de cada prédio; perto dele aparece o botão para entrar
- const doorOf=P=>{const [x1,y1,x2,y2]=P.b,n=P.side===-1,xm=(x1+x2)/2;return {out:[wx(xm),wz(n?y1-5:y2+5)],inn:[wx(xm),wz(n?y1+8:y2-8)],ry:n?Math.PI:0};};
+ const doorOf=P=>{const [x1,y1,x2,y2]=P.b,n=P.side===-1,xm=P.t==='auditorium'?(x1+x2)/2-(x2-x1)*.23:(x1+x2)/2;return {out:[wx(xm),wz(n?y1-5:y2+5)],inn:[wx(xm),wz(n?y1+8:y2-8)],ry:n?Math.PI:0};};
  const mkMark=()=>{const g2=new THREE.Group();const ring=new THREE.Mesh(new THREE.RingGeometry(.55,.8,28),new THREE.MeshStandardMaterial({color:0x3fae5a,emissive:0x2fd84a,emissiveIntensity:1.1,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.06;g2.add(ring);
   const ar=new THREE.Mesh(new THREE.ConeGeometry(.3,.6,4),new THREE.MeshStandardMaterial({color:0x3fae5a,emissive:0x2fd84a,emissiveIntensity:1.2}));ar.rotation.x=Math.PI;ar.position.y=1.4;g2.add(ar);g2.userData.ar=ar;g2.userData.keep=true;g2.visible=false;S.add(g2);return g2;};
  const MARKS=PROD.map(P=>{const d=doorOf(P),m=mkMark();m.position.set(d.out[0],0,d.out[1]);return m;}),MIN=mkMark();
@@ -2015,7 +2034,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
  const stopIdx=n=>PROD.findIndex(P=>P.n===n);
  // Fachadas das entradas existentes; a rota termina do lado de fora de cada porta.
  const TOUR_DOORS={
-  'Anfiteatro Palestra':['s',983,244],'Minas Cor':['s',925,612],
+  'Anfiteatro Palestra':['s',954.5,244],'Minas Cor':['s',925,612],
   'LAC Lápis Cru':['e',963,334],'CIC Acabamento':['n',812,309],
   'GUN Brindes':['w',1003,495],'Cosméticos 1':['w',1008,389],
   'Expedição':['s',652,605],'Almoxarifado':['e',537,522],
