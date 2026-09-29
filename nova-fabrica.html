@@ -568,9 +568,9 @@ let doorX=0,doorZ=0;
  for(const x of [-aw/2,aw/2]){const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(-z,y):sh.moveTo(-z,y));sh.closePath();const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({color:0xcfd2cd,side:THREE.DoubleSide,roughness:.85}));m.rotation.y=Math.PI/2;m.position.set(acx+x,0,acz);m.castShadow=m.receiveShadow=true;S.add(m);}
  const roofM=rmat(grayT,aw/1.2,1);
  function plate(z0,z1,y0,y1,th){const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);const m=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,th||.12,L),roofM);m.position.set(acx,(y0+y1)/2+.07,acz+(z0+z1)/2);m.rotation.x=Math.atan2(-dy,dz);m.castShadow=m.receiveShadow=true;S.add(m);return m;}
- plate(porchZ+.18,zr+.05,yS(porchZ+.18),yS(zr+.05));
+ plate(frontZ+.85,zr+.05,yS(frontZ+.85),yS(zr+.05));
  plate(-ad/2-.55,zE,yB(-ad/2-.55),yB(zE));
- {const f=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,.42,.1),roofM);f.position.set(acx,yB(zE)-.12,acz+zE+.03);f.castShadow=f.receiveShadow=true;S.add(f);}
+ {const f=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,.08,.1),roofM);f.position.set(acx,yB(zE)-.04,acz+zE+.03);f.castShadow=f.receiveShadow=true;S.add(f);}
  const frT=mkTex(512,256,(c,w,h)=>{c.fillStyle='#d9d4c8';c.fillRect(0,0,w,h);
   const cs=['#6f8fd0','#b07ac8','#e88fb0','#f2a65a','#f2d24a','#5fb4c8','#8fc070','#d8594e','#7fa8e0'];let x=0,i=0;while(x<w){const ww=26+((i*37)%40);c.fillStyle=cs[i%cs.length];c.fillRect(x,0,ww,h);x+=ww;i++;}
   c.globalAlpha=.35;for(let k=0;k<40;k++){c.fillStyle=cs[(k*5)%cs.length];c.beginPath();c.arc((k*97)%w,(k*53)%h,10+(k%4)*8,0,7);c.fill();}c.globalAlpha=1;
@@ -584,24 +584,30 @@ let doorX=0,doorZ=0;
    c.fillStyle='#255a40';for(let i=1;i<4;i++)c.fillRect(40+i*47.5-2,H*.3,4,H*.48);c.fillRect(40,H*.53,190,4);c.fillStyle='rgba(0,0,0,.2)';c.fillRect(0,H*.95,W,H*.05);});
   const acM=M(0xe6e8e6,{roughness:.6}),grM=M(0x3a3f42,{roughness:.7});
   for(const sg of [-1,1]){const t=gwT.clone();t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(Math.round(aw/3.2),1);
-   const addFace=(a,b)=>{const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=(b-a)/3.2;const m=new THREE.Mesh(new THREE.PlaneGeometry(b-a,AHh),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.rotation.y=sg>0?0:Math.PI;m.position.set(acx+(a+b)/2,AHh/2,acz+sg*(ad/2+.03));m.receiveShadow=true;S.add(m);};
-   if(sg>0){for(let i=0;i<cuts.length-1;i+=2)addFace(cuts[i],cuts[i+1]);for(const x of entries){const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=entryWidth/3.2;const h=AHh-2.65,m=new THREE.Mesh(new THREE.PlaneGeometry(entryWidth,h),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.position.set(acx+x,(AHh+2.65)/2,acz+frontZ+.035);m.receiveShadow=true;S.add(m);}}
+   const addFace=(a,b)=>{const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=(b-a)/3.2;const m=new THREE.Mesh(new THREE.PlaneGeometry(b-a,AHh),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.rotation.y=sg>0?0:Math.PI;m.position.set(acx+(a+b)/2,AHh/2,acz+sg*(ad/2+.12));m.receiveShadow=true;S.add(m);};
+   if(sg>0){for(let i=0;i<cuts.length-1;i+=2)addFace(cuts[i],cuts[i+1]);for(const x of entries){const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=entryWidth/3.2;const h=AHh-2.65,m=new THREE.Mesh(new THREE.PlaneGeometry(entryWidth,h),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.position.set(acx+x,(AHh+2.65)/2,acz+frontZ+.12);m.receiveShadow=true;S.add(m);}}
    else addFace(-aw/2,aw/2);
    const fa=new THREE.Mesh(new THREE.BoxGeometry(aw+.2,.35,.08),M(0x1f4a36));fa.position.set(acx,AHh+.05,acz+sg*(ad/2+.1));S.add(fa);
    for(let x=-aw/2+3.2;x<aw/2-1;x+=6.4){if(sg>0&&entries.some(e=>Math.abs(x-e)<entryWidth/2+1))continue;const u=new THREE.Group();u.position.set(acx+x,AHh-.75,acz+sg*(ad/2+.2));u.rotation.y=sg>0?0:Math.PI;S.add(u);
     const b=new THREE.Mesh(new THREE.BoxGeometry(.9,.6,.35),acM);b.castShadow=true;u.add(b);const f=new THREE.Mesh(new THREE.CircleGeometry(.22,16),grM);f.position.set(-.12,0,.18);u.add(f);}}
   {const t=gwT.clone();t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(Math.max(1,Math.round(ad/3.2)),1);
-   const m=new THREE.Mesh(new THREE.PlaneGeometry(ad,AHh),new THREE.MeshStandardMaterial({map:t,roughness:.8}));m.rotation.y=Math.PI/2;m.position.set(acx+aw/2+.03,AHh/2,acz);m.receiveShadow=true;S.add(m);}}
- {const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(z,y):sh.moveTo(z,y));sh.closePath();const fr=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({map:frT,roughness:.8}));fr.rotation.y=-Math.PI/2;fr.position.set(acx-aw/2-.03,0,acz);fr.receiveShadow=true;S.add(fr);}
+   const m=new THREE.Mesh(new THREE.PlaneGeometry(ad,AHh),new THREE.MeshStandardMaterial({map:t,roughness:.8}));m.rotation.y=Math.PI/2;m.position.set(acx+aw/2+.12,AHh/2,acz);m.receiveShadow=true;S.add(m);}}
+ {const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(z,y):sh.moveTo(z,y));sh.closePath();const fr=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({map:frT,roughness:.8}));fr.rotation.y=-Math.PI/2;fr.position.set(acx-aw/2-.12,0,acz);fr.receiveShadow=true;S.add(fr);}
  // Varanda contínua sob a nova beirada, com duas passagens alinhadas aos vãos.
  const deck=M(0xc9c7bc,{roughness:.9}),rail=M(0x2d674a,{roughness:.55,metalness:.15}),frame=M(0xe9e9e4,{roughness:.8});
  const porch=(w,h,d,m,x,y,z)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(acx+x,y,acz+z);q.castShadow=q.receiveShadow=true;S.add(q);};
+ const mullion=M(0x255a40,{roughness:.6,metalness:.15}),pane=M(0xb7d4dc,{transparent:true,opacity:.65,depthWrite:false,roughness:.12,metalness:.12});
+ for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1],count=Math.max(1,Math.round((b-a)/2.7)),bay=(b-a)/count;
+  for(let j=0;j<count;j++){const x=a+(j+.5)*bay,w=bay-.32,z=frontZ+.16;
+   porch(w,1.58,.035,pane,x,1.81,z);for(const side of [-1,1])porch(.075,1.65,.07,frame,x+side*w/2,1.81,z+.025);
+   for(const y of [1,2.62])porch(w+.08,.075,.07,mullion,x,y,z+.025);
+   porch(.055,1.55,.07,frame,x,1.81,z+.05);}}
  porch(aw+.35,.18,porchDepth+.25,deck,0,.09,frontZ+porchDepth/2);
  for(const x of entries){porch(entryWidth+.2,.08,.65,deck,x,.04,porchZ+.3);for(const side of [-1,1])porch(.12,2.65,.16,frame,x+side*entryWidth/2,1.325,frontZ+.08);porch(entryWidth+.15,.16,.22,frame,x,2.66,frontZ+.08);}
  for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1];porch(b-a,.77,.12,rail,(a+b)/2,.49,porchZ-.08);porch(b-a,.08,.16,frame,(a+b)/2,.91,porchZ-.08);}
- const eaveH=yS(porchZ);
- for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,porchZ-.08);
- porch(aw+.7,.27,.2,roofM,0,yS(porchZ)-.13,porchZ+.11);
+ const eaveH=yS(frontZ+.85);
+ for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,frontZ+.75);
+ porch(aw+.7,.27,.2,roofM,0,eaveH-.13,frontZ+.95);
 }
 {const Y1=274,Y2=300,XA=918,XM=1043,XB=1153,bd=(Y2-Y1)*K,bz=wz((Y1+Y2)/2);
  function grp(x1,x2){const g=new THREE.Group();g.position.set(wx((x1+x2)/2),0,bz);S.add(g);return [g,(x2-x1)*K];}
