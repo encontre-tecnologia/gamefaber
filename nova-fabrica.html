@@ -556,6 +556,7 @@ let doorX=0,doorZ=0;
  const yB=z=>AHh+k1*(z+ad/2),yS=z=>AHh+k2*(ad/2-z);
  const zE=zr+.85;
  const shell=M(0xcfd2cd,{roughness:.85}),frontZ=ad/2,porchDepth=2.05,porchZ=frontZ+porchDepth;
+ const backEave=-ad/2-.85,frontEave=frontZ+1.1;
  const entries=[-aw*.23,aw*.23],entryWidth=2.45;
  const shellBox=(w,h,d,x,y,z)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),shell);m.position.set(acx+x,y,acz+z);m.castShadow=m.receiveShadow=true;S.add(m);return m;};
  // Fachada sul dividida em três trechos: os dois vãos ficam livres até o piso.
@@ -568,8 +569,8 @@ let doorX=0,doorZ=0;
  for(const x of [-aw/2,aw/2]){const sh=new THREE.Shape();endSection.forEach(([z,y],i)=>i?sh.lineTo(-z,y):sh.moveTo(-z,y));sh.closePath();const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),new THREE.MeshStandardMaterial({color:0xcfd2cd,side:THREE.DoubleSide,roughness:.85}));m.rotation.y=Math.PI/2;m.position.set(acx+x,0,acz);m.castShadow=m.receiveShadow=true;S.add(m);}
  const roofM=rmat(grayT,aw/1.2,1);
  function plate(z0,z1,y0,y1,th){const dz=z1-z0,dy=y1-y0,L=Math.hypot(dz,dy);const m=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,th||.12,L),roofM);m.position.set(acx,(y0+y1)/2+.07,acz+(z0+z1)/2);m.rotation.x=Math.atan2(-dy,dz);m.castShadow=m.receiveShadow=true;S.add(m);return m;}
- plate(frontZ+.85,zr+.05,yS(frontZ+.85),yS(zr+.05));
- plate(-ad/2-.55,zE,yB(-ad/2-.55),yB(zE));
+ plate(frontEave,zr+.05,yS(frontEave),yS(zr+.05));
+ plate(backEave,zE,yB(backEave),yB(zE));
  {const f=new THREE.Mesh(new THREE.BoxGeometry(aw+.8,.08,.1),roofM);f.position.set(acx,yB(zE)-.04,acz+zE+.03);f.castShadow=f.receiveShadow=true;S.add(f);}
  const frT=mkTex(512,256,(c,w,h)=>{c.fillStyle='#d9d4c8';c.fillRect(0,0,w,h);
   const cs=['#6f8fd0','#b07ac8','#e88fb0','#f2a65a','#f2d24a','#5fb4c8','#8fc070','#d8594e','#7fa8e0'];let x=0,i=0;while(x<w){const ww=26+((i*37)%40);c.fillStyle=cs[i%cs.length];c.fillRect(x,0,ww,h);x+=ww;i++;}
@@ -587,7 +588,7 @@ let doorX=0,doorZ=0;
    const addFace=(a,b)=>{const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=(b-a)/3.2;const m=new THREE.Mesh(new THREE.PlaneGeometry(b-a,AHh),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.rotation.y=sg>0?0:Math.PI;m.position.set(acx+(a+b)/2,AHh/2,acz+sg*(ad/2+.12));m.receiveShadow=true;S.add(m);};
    if(sg>0){for(let i=0;i<cuts.length-1;i+=2)addFace(cuts[i],cuts[i+1]);for(const x of entries){const tex=t.clone();tex.needsUpdate=true;tex.repeat.x=entryWidth/3.2;const h=AHh-2.65,m=new THREE.Mesh(new THREE.PlaneGeometry(entryWidth,h),new THREE.MeshStandardMaterial({map:tex,roughness:.8}));m.position.set(acx+x,(AHh+2.65)/2,acz+frontZ+.12);m.receiveShadow=true;S.add(m);}}
    else addFace(-aw/2,aw/2);
-   const fa=new THREE.Mesh(new THREE.BoxGeometry(aw+.2,.35,.08),M(0x1f4a36));fa.position.set(acx,AHh+.05,acz+sg*(ad/2+.1));S.add(fa);
+   const fa=new THREE.Mesh(new THREE.BoxGeometry(aw+.2,.16,.08),M(0x1f4a36));fa.position.set(acx,AHh-.3,acz+sg*(ad/2+.1));S.add(fa);
    for(let x=-aw/2+3.2;x<aw/2-1;x+=6.4){if(sg>0&&entries.some(e=>Math.abs(x-e)<entryWidth/2+1))continue;const u=new THREE.Group();u.position.set(acx+x,AHh-.75,acz+sg*(ad/2+.2));u.rotation.y=sg>0?0:Math.PI;S.add(u);
     const b=new THREE.Mesh(new THREE.BoxGeometry(.9,.6,.35),acM);b.castShadow=true;u.add(b);const f=new THREE.Mesh(new THREE.CircleGeometry(.22,16),grM);f.position.set(-.12,0,.18);u.add(f);}}
   {const t=gwT.clone();t.needsUpdate=true;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(Math.max(1,Math.round(ad/3.2)),1);
@@ -605,9 +606,9 @@ let doorX=0,doorZ=0;
  porch(aw+.35,.18,porchDepth+.25,deck,0,.09,frontZ+porchDepth/2);
  for(const x of entries){porch(entryWidth+.2,.08,.65,deck,x,.04,porchZ+.3);for(const side of [-1,1])porch(.12,2.65,.16,frame,x+side*entryWidth/2,1.325,frontZ+.08);porch(entryWidth+.15,.16,.22,frame,x,2.66,frontZ+.08);}
  for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1];porch(b-a,.77,.12,rail,(a+b)/2,.49,porchZ-.08);porch(b-a,.08,.16,frame,(a+b)/2,.91,porchZ-.08);}
- const eaveH=yS(frontZ+.85);
- for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,frontZ+.75);
- porch(aw+.7,.27,.2,roofM,0,eaveH-.13,frontZ+.95);
+ const eaveH=yS(frontEave);
+ for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,frontEave-.1);
+ porch(aw+.7,.27,.2,roofM,0,eaveH-.13,frontEave+.1);
 }
 {const Y1=274,Y2=300,XA=918,XM=1043,XB=1153,bd=(Y2-Y1)*K,bz=wz((Y1+Y2)/2);
  function grp(x1,x2){const g=new THREE.Group();g.position.set(wx((x1+x2)/2),0,bz);S.add(g);return [g,(x2-x1)*K];}
