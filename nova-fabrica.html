@@ -141,6 +141,7 @@ const CHEMROADPOLES=[[1265,667],[1380,667]];
 const PARK=[[650,100],[652,62],[664,40],[684,28],[706,22],[720,25.5],[800,43],[880,60.5],[905,66],[918,72],[922,90],[920,112],[920,285],[690,285],[662,268],[650,240]];
 const RC=[915,58];
 const PAVE=[[700,296],[1160,296],[1160,640],[740,640],[740,400],[700,400]];
+const MINAS_LAWN=[[752,400],[812,400],[812,622],[752,622]];
 const PAVE2=[[400,440],[560,440],[560,450],[720,450],[740,640],[400,640]];
 const CHEMPAD=[[1342,662],[1419,662],[1419,726],[1342,726]];
 const YARD=[[1010,662],[1150,662],[1152,950],[1070,975],[1020,940]];
@@ -223,6 +224,9 @@ for(let i=0;i<5000;i++){const x=rnd(1195,1448),y=rnd(700,1086);if(!inPoly(SCRUB,
 g.globalAlpha=1;
 
 poly(PAVE,'#a7a79f');poly(PAVE2,"#6d8e3a");poly(CHEMPAD,'#aba9a1');
+// Gramado sob as duas fileiras de árvores entre a Expedição e a Minas Cor.
+poly(MINAS_LAWN,'#608333');g.save();g.beginPath();MINAS_LAWN.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.clip();
+for(let i=0;i<450;i++){g.globalAlpha=.22;g.fillStyle=gc[i%gc.length];g.beginPath();g.arc(rnd(752,812),rnd(400,622),rnd(1.5,7),0,7);g.fill();}g.globalAlpha=1;g.restore();
 poly(YARD,'#5f812e');g.save();g.beginPath();YARD.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.clip();for(let i=0;i<220;i++){g.fillStyle=['rgba(150,140,95,.14)','rgba(106,140,53,.3)','rgba(82,116,42,.3)','rgba(128,154,68,.25)'][i%4];g.beginPath();g.ellipse(rnd(1005,1155),rnd(655,980),rnd(4,16),rnd(3,10),rnd(0,3),0,7);g.fill();}g.restore();
 g.strokeStyle='#b09b72';g.lineWidth=5;g.globalAlpha=.8;g.beginPath();g.moveTo(545,650);g.bezierCurveTo(530,760,555,880,545,990);g.stroke();g.beginPath();g.moveTo(1400,700);g.bezierCurveTo(1330,800,1260,880,1232,980);g.stroke();
 g.beginPath();g.moveTo(1170,970);g.lineTo(1150,1086);g.stroke();g.globalAlpha=1;
