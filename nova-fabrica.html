@@ -628,6 +628,16 @@ let doorX=0,doorZ=0;
    porch(.055,1.55,.07,frame,x,1.81,z+.05);}}
  porch(aw+.35,.18,porchDepth+.25,deck,0,.09,frontZ+porchDepth/2);
  for(const x of entries){porch(entryWidth+.2,.08,.65,deck,x,.04,porchZ+.3);for(const side of [-1,1])porch(.12,2.65,.16,frame,x+side*entryWidth/2,1.325,frontZ+.08);porch(entryWidth+.15,.16,.22,frame,x,2.66,frontZ+.08);}
+ // Os dois vãos da varanda recebem portas duplas de vidro com caixilhos e puxadores.
+ const doorGlass=M(0x6c9494,{transparent:true,opacity:.72,depthWrite:false,roughness:.16,metalness:.12}),handle=M(0xd9dfde,{metalness:.75,roughness:.25});
+ for(const x of entries){const z=frontZ+.24,leaf=entryWidth/2;
+  for(const side of [-1,1]){const cx=x+side*leaf/2;
+   porch(leaf-.14,2.16,.045,doorGlass,cx,1.43,z);
+   for(const edge of [-1,1])porch(.075,2.48,.09,mullion,cx+edge*(leaf/2-.035),1.32,z+.035);
+   for(const y of [.13,1.12,2.53])porch(leaf,.075,.09,mullion,cx,y,z+.04);
+   porch(leaf-.12,.27,.075,rail,cx,.31,z+.055);
+   porch(.055,.3,.08,handle,cx-side*.16,1.36,z+.12);}
+  porch(entryWidth,.08,.22,frame,x,.08,z);}
  for(let i=0;i<cuts.length-1;i+=2){const a=cuts[i],b=cuts[i+1];porch(b-a,.77,.12,rail,(a+b)/2,.49,porchZ-.08);porch(b-a,.08,.16,frame,(a+b)/2,.91,porchZ-.08);}
  const eaveH=yS(frontEave);
  for(const x of [-aw/2,aw/2,...entries.flatMap(v=>[v-entryWidth/2,v+entryWidth/2])])porch(.16,eaveH-.12,.16,frame,x,(eaveH-.12)/2,frontEave-.1);
