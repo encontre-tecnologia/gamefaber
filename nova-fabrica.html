@@ -778,15 +778,22 @@ fill(FOREST[0],1500,1.8,3.2);fill(FOREST[1],1700,1.8,3.2);fill(FOREST[2],1500,1.
  const hed=new THREE.Mesh(new THREE.BoxGeometry(8.5,1.2,.9),M(0x4f6d31,{roughness:1}));hed.position.set(0,.6,-.9);hed.castShadow=hed.receiveShadow=true;g.add(hed);
 }
 
+// Malha usada no acesso da rua de pedra e na cerca dos fundos.
+const accessMeshT=mkTex(64,64,(c,W,H)=>{c.clearRect(0,0,W,H);c.strokeStyle='rgba(150,158,160,.95)';c.lineWidth=2.2;for(let i=-H;i<W+H;i+=16){c.beginPath();c.moveTo(i,0);c.lineTo(i+H,H);c.stroke();c.beginPath();c.moveTo(i+H,0);c.lineTo(i,H);c.stroke();}});
 // cerca do clube: alambrado com trepadeira e cerca viva em toda a volta (para nas duas portarias)
 {const FENCES=[[[697,-9],[637,-8],[559,-29],[465,-40],[324,-44],[168,-50],[51,-67],[-19,-90],[-31,-152],[12,-205],[90,-267],[207,-336],[324,-398],[442,-440],[559,-452],[629,-452],[676,-440],[707,-382],[739,-282],[778,-190],[825,-105],[852,-44],[878,4],[890,28]],[[735,-1],[828,15]],[[921,98],[921,252.5]]];
  const meshM=new THREE.MeshStandardMaterial({color:0x7b8482,transparent:true,opacity:.32,side:THREE.DoubleSide,roughness:.6,metalness:.4});
  const pts=[],bush=[];let posts=[];
  for(const F of FENCES)for(let i=0;i<F.length-1;i++){const [ax,ay]=F[i],[bx,by]=F[i+1],x0=wx(ax),z0=wz(ay),x1=wx(bx),z1=wz(by),L=Math.hypot(x1-x0,z1-z0);if(L<.05)continue;
+  if(F===FENCES[2]){const ang=-Math.atan2(z1-z0,x1-x0),cx=(x0+x1)/2,cz=(z0+z1)/2,H=1.9,conc=M(0xe9e7e1,{roughness:.8}),wire=M(0x8e9496,{metalness:.6,roughness:.4});
+   const base=new THREE.Mesh(new THREE.BoxGeometry(L,.3,.14),conc);base.position.set(cx,.15,cz);base.rotation.y=ang;base.castShadow=base.receiveShadow=true;S.add(base);
+   const tex=accessMeshT.clone();tex.needsUpdate=true;tex.repeat.set(L/.9,H/.9);const mesh=new THREE.Mesh(new THREE.PlaneGeometry(L,H),new THREE.MeshStandardMaterial({map:tex,transparent:true,alphaTest:.3,side:THREE.DoubleSide,roughness:.6,metalness:.4}));mesh.position.set(cx,.3+H/2,cz);mesh.rotation.y=ang;S.add(mesh);
+   for(const y of [H+.35,H+.6,H+.85]){const line=new THREE.Mesh(new THREE.BoxGeometry(L,.02,.02),wire);line.position.set(cx,y,cz);line.rotation.y=ang;S.add(line);}
+   const n=Math.max(1,Math.round(L/3));for(let k=0;k<=n;k++){const t=k/n,x=x0+(x1-x0)*t,z=z0+(z1-z0)*t,p=new THREE.Mesh(new THREE.BoxGeometry(.16,H+.95,.16),conc),top=new THREE.Mesh(new THREE.BoxGeometry(.14,.45,.14),conc);p.position.set(x,(H+.95)/2,z);p.castShadow=true;S.add(p);top.position.set(x,H+.95,z);top.rotation.x=-.55;top.translateZ(.1);top.castShadow=true;S.add(top);}continue;}
   const pl=new THREE.Mesh(new THREE.PlaneGeometry(L,1.25),meshM);pl.position.set((x0+x1)/2,.63,(z0+z1)/2);pl.rotation.y=-Math.atan2(z1-z0,x1-x0);S.add(pl);
   const tp=new THREE.Mesh(new THREE.BoxGeometry(L,.04,.04),M(0x8e9694,{metalness:.5,roughness:.5}));tp.position.set((x0+x1)/2,1.25,(z0+z1)/2);tp.rotation.y=pl.rotation.y;S.add(tp);
   const np=Math.max(1,Math.round(L/2.6));for(let k=0;k<=np;k++){const t=k/np;posts.push([x0+(x1-x0)*t,z0+(z1-z0)*t]);}
-  const nb=F===FENCES[2]?0:Math.round(L/.42);const nx=-(z1-z0)/L,nz=(x1-x0)/L;for(let k=0;k<nb;k++){if(Math.random()<.05)continue;const t=(k+Math.random())/nb,o=(Math.random()-.5)*.4;bush.push([x0+(x1-x0)*t+nx*o,z0+(z1-z0)*t+nz*o]);}}
+  const nb=Math.round(L/.42),nx=-(z1-z0)/L,nz=(x1-x0)/L;for(let k=0;k<nb;k++){if(Math.random()<.05)continue;const t=(k+Math.random())/nb,o=(Math.random()-.5)*.4;bush.push([x0+(x1-x0)*t+nx*o,z0+(z1-z0)*t+nz*o]);}}
  const pg=new THREE.InstancedMesh(new THREE.CylinderGeometry(.04,.05,1.35,6),M(0x8e9694,{metalness:.5,roughness:.5}),posts.length);const o3=new THREE.Object3D();
  posts.forEach(([x,z],i)=>{o3.position.set(x,.67,z);o3.rotation.set(0,0,0);o3.scale.set(1,1,1);o3.updateMatrix();pg.setMatrixAt(i,o3.matrix);});pg.castShadow=true;S.add(pg);
  const bg=new THREE.InstancedMesh(new THREE.DodecahedronGeometry(1,0),new THREE.MeshStandardMaterial({roughness:.95,flatShading:true}),bush.length);const col=new THREE.Color();
@@ -835,9 +842,13 @@ tree(1157,221,2.6);tree(1192,244,2.8);
  const cm=M(0xcfccc2,{roughness:.9});for(const sz of [-1,1]){const cb=new THREE.Mesh(new THREE.BoxGeometry(L+.3,.14,.3),cm);cb.position.set(wx((x0+x1)/2),.07,wz(y)+sz*(W/2+.15));cb.receiveShadow=true;S.add(cb);}
 }
 
-// portão de grade verde na frente da rua de pedra (igual ao da portaria branca)
+// Portão da entrada oeste com a mesma tela e os mourões da cerca dos fundos.
 for(const [gx,gy,gr0] of [[921,260,Math.PI/2],[1154,260,Math.PI/2],[700,291,0]]){const g=new THREE.Group();g.position.set(wx(gx),0,wz(gy));g.rotation.y=gr0;S.add(g);const gr=M(0x3f6f55,{roughness:.5,metalness:.4}),wc=M(0xe9e7e1,{roughness:.85});
  const b=(w,h,d,m,x,y,z)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(x,y,z);q.castShadow=true;g.add(q);return q;};
+ if(gx===921){const W=3.3,wire=M(0x8e9496,{metalness:.6,roughness:.4}),tex=accessMeshT.clone();tex.needsUpdate=true;tex.repeat.set(W/.9,1.9/.9);
+  const mesh=new THREE.Mesh(new THREE.PlaneGeometry(W-.3,1.9),new THREE.MeshStandardMaterial({map:tex,transparent:true,alphaTest:.3,side:THREE.DoubleSide,roughness:.6,metalness:.4}));mesh.position.set(0,1.25,0);g.add(mesh);
+  for(const y of [.3,2.2])b(W-.24,.06,.06,wire,0,y,0);for(const x of [-W/2+.12,0,W/2-.12])b(.06,1.9,.06,wire,x,1.25,0);
+  for(const sx of [-1,1]){b(.3,2.85,.3,wc,sx*(W/2+.15),1.425,0);const cap=b(.14,.45,.14,wc,sx*(W/2+.15),2.85,0);cap.rotation.x=-.55;cap.translateZ(.1);}continue;}
  const W=3.3;for(const [x0,x1] of [[-W/2,0],[0,W/2]]){b(x1-x0-.04,.06,.06,gr,(x0+x1)/2,1.35,0);b(x1-x0-.04,.06,.06,gr,(x0+x1)/2,.12,0);for(let x=x0+.07;x<=x1-.05;x+=.14)b(.035,1.25,.035,gr,x,.72,0);}
  for(const sx of [-1,1])b(.3,1.55,.3,wc,sx*(W/2+.15),.78,0);}
 
