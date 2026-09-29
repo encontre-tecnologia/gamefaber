@@ -1973,18 +1973,21 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
  for(const sx of [-1,1]){const a=new THREE.Group();a.position.set(sx*.25,1.58,0);av.add(a);cy(.055,.048,.52,sm,0,-.26,0,a);const h=new THREE.Mesh(new THREE.SphereGeometry(.05,8,8),sk);h.position.y=-.55;a.add(h);arms.push(a);}
  const inR=(b,px,py,m)=>px>b[0]-m&&px<b[2]+m&&py>b[1]-m&&py<b[3]+m;
  const SOLID=B.filter(b=>b[7]!=='Caixa de Energia');
- const blockedAt=(x,z)=>{const px=x/K+724,py=z/K+543;if(WK.inside>=0){const b=PROD[WK.inside].b;return !inR(b,px,py,-2.2);}if(px<-60||px>1500||py<-470||py>1120)return true;return SOLID.some(b=>inR(b,px,py,.5))||PROD.some(P=>inR(P.b,px,py,.5))||PERIMS.some(q=>nearLine(q,px,py,2));};
+ // A escada externa da Enfermaria sobe pela fachada norte até a porta do primeiro andar.
+ const clinicDoorX=wx((918+1043)/2),clinicFrontZ=wz(274),clinicStepZ=clinicFrontZ-.6,clinicStepX=clinicDoorX-4.4,clinicLandingX=clinicDoorX-.9,clinicFloor=3.1;
+ const clinicStairY=(x,z)=>{if(Math.abs(z-clinicStepZ)>.68||x<clinicStepX-.2||x>clinicDoorX+.9)return 0;return clinicFloor*Math.max(0,Math.min(1,(x-clinicStepX)/(clinicLandingX-clinicStepX)));};
+ const blockedAt=(x,z)=>{const px=x/K+724,py=z/K+543;if(WK.inside>=0){const b=PROD[WK.inside].b;return !inR(b,px,py,-2.2);}if(Math.abs(clinicStairY(x,z)-WK.pos.y)>.75)return true;if(px<-60||px>1500||py<-470||py>1120)return true;return SOLID.some(b=>inR(b,px,py,.5))||PROD.some(P=>inR(P.b,px,py,.5))||PERIMS.some(q=>nearLine(q,px,py,2));};
  // portas: um marcador verde na frente de cada prédio; perto dele aparece o botão para entrar
- const doorOf=P=>{const [x1,y1,x2,y2]=P.b,n=P.side===-1,xm=P.t==='auditorium'?(x1+x2)/2-(x2-x1)*.23:(x1+x2)/2;return {out:[wx(xm),wz(n?y1-5:y2+5)],inn:[wx(xm),wz(n?y1+8:y2-8)],ry:n?Math.PI:0};};
+ const doorOf=P=>{const [x1,y1,x2,y2]=P.b,n=P.side===-1,xm=P.t==='auditorium'?(x1+x2)/2-(x2-x1)*.23:(x1+x2)/2;if(P.n==='Enfermaria')return {out:[clinicDoorX,clinicStepZ],inn:[clinicDoorX,wz(y1+8)],ry:Math.PI,elevated:clinicFloor};return {out:[wx(xm),wz(n?y1-5:y2+5)],inn:[wx(xm),wz(n?y1+8:y2-8)],ry:n?Math.PI:0};};
  const mkMark=()=>{const g2=new THREE.Group();const ring=new THREE.Mesh(new THREE.RingGeometry(.55,.8,28),new THREE.MeshStandardMaterial({color:0x3fae5a,emissive:0x2fd84a,emissiveIntensity:1.1,side:THREE.DoubleSide}));ring.rotation.x=-Math.PI/2;ring.position.y=.06;g2.add(ring);
   const ar=new THREE.Mesh(new THREE.ConeGeometry(.3,.6,4),new THREE.MeshStandardMaterial({color:0x3fae5a,emissive:0x2fd84a,emissiveIntensity:1.2}));ar.rotation.x=Math.PI;ar.position.y=1.4;g2.add(ar);g2.userData.ar=ar;g2.userData.keep=true;g2.visible=false;S.add(g2);return g2;};
- const MARKS=PROD.map(P=>{const d=doorOf(P),m=mkMark();m.position.set(d.out[0],0,d.out[1]);return m;}),MIN=mkMark();
+ const MARKS=PROD.map(P=>{const d=doorOf(P),m=mkMark();m.position.set(d.out[0],d.elevated||0,d.out[1]);return m;}),MIN=mkMark();
  const bDoor=document.getElementById('walkDoor');let doorAct=null;bDoor.onclick=()=>{if(doorAct)doorAct();};
  const ROOM={};const roomOf=i=>{if(ROOM[i])return ROOM[i];const [x1,y1,x2,y2]=PROD[i].b,w=(x2-x1)*K,d=(y2-y1)*K;const m=new THREE.Mesh(new THREE.BoxGeometry(w+.4,6.2,d+.4),new THREE.MeshStandardMaterial({color:0xe7e5df,roughness:.9,side:THREE.BackSide}));m.position.set(wx((x1+x2)/2),3.1,wz((y1+y2)/2));m.receiveShadow=true;m.userData.keep=true;S.add(m);return ROOM[i]=m;};
  function openInside(i){if(WK.inside===i)return;if(WK.inside>=0)closeInside();WK.inside=i;prodIdx=i;window.CALIN=PROD[i].t==='boiler';const P=PROD[i],[x1,y1,x2,y2]=P.b,X0=wx(x1)-.9,X1=wx(x2)+.9,Z0=wz(y1)-.9,Z1=wz(y2)+.9;
   for(const o of S.children){if(o===av||o.isInstancedMesh||o.userData.keep||!o.visible||o.isLight)continue;const q=o.position;if(q.x>X0&&q.x<X1&&q.z>Z0&&q.z<Z1&&q.y<30){o.visible=false;prodHidden.push(o);}}
   const g=prodCache[i]||(prodCache[i]=buildInterior(P));g.visible=true;roomOf(i).visible=true;const d=doorOf(P);WK.pos.set(d.inn[0],0,d.inn[1]);WK.yaw=d.ry;MIN.position.set(d.out[0],0,(d.inn[1]+d.out[1])/2+(P.side===-1?1.2:-1.2));MIN.visible=true;MARKS.forEach(m=>m.visible=false);pInfo.innerHTML=`<b>${P.n}</b>${P.i}`;pInfo.hidden=!!WK.tour;}
- function closeInside(){if(WK.inside<0)return;const i=WK.inside;restoreProd();if(ROOM[i])ROOM[i].visible=false;WK.inside=-1;prodIdx=-1;window.CALIN=false;pInfo.hidden=true;MIN.visible=false;const d=doorOf(PROD[i]);WK.pos.set(d.out[0],0,d.out[1]+(PROD[i].side===-1?-1.5:1.5));WK.yaw=d.ry+Math.PI;if(WK.on)MARKS.forEach(m=>m.visible=true);}
+ function closeInside(){if(WK.inside<0)return;const i=WK.inside;restoreProd();if(ROOM[i])ROOM[i].visible=false;WK.inside=-1;prodIdx=-1;window.CALIN=false;pInfo.hidden=true;MIN.visible=false;const d=doorOf(PROD[i]);WK.pos.set(d.out[0],d.elevated||0,d.out[1]+(d.elevated?0:PROD[i].side===-1?-1.5:1.5));WK.yaw=d.ry+Math.PI;if(WK.on)MARKS.forEach(m=>m.visible=true);}
  function startWalk(){exitHall(false);exitProd(false);tw=null;WK.on=true;ui.hidden=false;setFov();help.style.opacity=1;clearTimeout(WK.ht);WK.ht=setTimeout(()=>help.style.opacity=0,6000);if(nav)nav.style.zIndex=9;{const pn=document.getElementById('navPan');if(pn)pn.hidden=true;}{const h=document.getElementById('hint');if(h)h.style.display='none';}lay.style.display='none';if(C)C.enabled=false;
   WK.pos.set(wx(835),0,wz(303));WK.yaw=Math.PI/2;WK.pitch=-.2;WK.dist=5.5;av.visible=!WK.fp;MARKS.forEach(m=>m.visible=true);}
  function stopWalk(){if(!WK.on)return;if(WK.tour&&window.__stopWalkT)window.__stopWalkT();WK.on=false;closeInside();MARKS.forEach(m=>m.visible=false);bDoor.hidden=true;ui.hidden=true;av.visible=false;setFov();if(nav)nav.style.zIndex='';lay.style.display=showTags?'':'none';if(C){C.enabled=true;C.target.set(WK.pos.x,0,WK.pos.z);}
@@ -2021,18 +2024,19 @@ addEventListener('keydown',e=>{if(e.key==='Escape')exitProd(true);});
   if(k.ArrowLeft)WK.yaw+=dt*2;if(k.ArrowRight)WK.yaw-=dt*2;f-=WK.joy[1];sd+=WK.joy[0];if(WK.tour){f=sd=0;TOURUP(dt);}const m=WK.tour?WK.tm:Math.min(1,Math.hypot(f,sd));
   const sp=(WK.run||k.ShiftLeft||k.ShiftRight?13:5.5)*m;if(m>.05&&!WK.tour){const a=Math.atan2(sd,f),ang=WK.yaw+Math.PI-a;const dx=Math.sin(ang)*sp*dt,dz=Math.cos(ang)*sp*dt;
    if(!blockedAt(WK.pos.x+dx,WK.pos.z))WK.pos.x+=dx;if(!blockedAt(WK.pos.x,WK.pos.z+dz))WK.pos.z+=dz;av.rotation.y=ang;WK.t+=dt*sp*2.2;}else WK.t*=.9;
-  const sw=Math.sin(WK.t)*.6*Math.min(1,m*1.5);legs[0].rotation.x=sw;legs[1].rotation.x=-sw;arms[0].rotation.x=-sw*.8;arms[1].rotation.x=sw*.8;av.position.copy(WK.pos);av.position.y=Math.abs(Math.sin(WK.t))*.04*m;
+  if(!WK.tour&&WK.inside<0)WK.pos.y=clinicStairY(WK.pos.x,WK.pos.z);
+  const sw=Math.sin(WK.t)*.6*Math.min(1,m*1.5);legs[0].rotation.x=sw;legs[1].rotation.x=-sw;arms[0].rotation.x=-sw*.8;arms[1].rotation.x=sw*.8;av.position.copy(WK.pos);av.position.y+=Math.abs(Math.sin(WK.t))*.04*m;
   {const tt=performance.now()/400;MARKS.concat([MIN]).forEach(m=>{if(m.visible)m.userData.ar.position.y=1.4+Math.sin(tt)*.2;});
    let act=null,label='';if(WK.tour){}else if(WK.inside>=0){if(Math.hypot(MIN.position.x-WK.pos.x,MIN.position.z-WK.pos.z)<2.4){act=()=>closeInside();label='🚪 Sair de '+PROD[WK.inside].n;}}
-   else{let best=3,bi=-1;MARKS.forEach((m,i)=>{const d=Math.hypot(m.position.x-WK.pos.x,m.position.z-WK.pos.z);if(d<best){best=d;bi=i;}});if(bi>=0){act=()=>openInside(bi);label='🚪 Entrar em '+PROD[bi].n;}}
+   else{let best=3,bi=-1;MARKS.forEach((m,i)=>{if(m.position.y&&WK.pos.y<m.position.y-.35)return;const d=Math.hypot(m.position.x-WK.pos.x,m.position.y-WK.pos.y,m.position.z-WK.pos.z);if(d<best){best=d;bi=i;}});if(bi>=0){act=()=>openInside(bi);label='🚪 Entrar em '+PROD[bi].n;}}
    doorAct=act;bDoor.hidden=!act;if(act&&bDoor.textContent!==label)bDoor.textContent=label;if(act&&(k.KeyE||k.Enter)){k.KeyE=k.Enter=false;act();}}
-  dir.set(-Math.sin(WK.yaw)*Math.cos(WK.pitch),Math.sin(WK.pitch),-Math.cos(WK.yaw)*Math.cos(WK.pitch));const head=new THREE.Vector3(WK.pos.x,1.7,WK.pos.z);
+  dir.set(-Math.sin(WK.yaw)*Math.cos(WK.pitch),Math.sin(WK.pitch),-Math.cos(WK.yaw)*Math.cos(WK.pitch));const head=new THREE.Vector3(WK.pos.x,WK.pos.y+1.7,WK.pos.z);
   if(needle)needle.style.transform=`rotate(${WK.yaw*180/Math.PI}deg)`;
   if(WK.fp){cam.position.copy(head).addScaledVector(new THREE.Vector3(dir.x,0,dir.z).normalize(),-.3);cam.lookAt(head.clone().add(dir));}
   else if(WK.tour&&WK.tcam){if(!WK.tl||!isFinite(WK.tl.x+WK.tl.y+WK.tl.z))WK.tl=WK.tcam.t.clone();if(!isFinite(cam.position.x+cam.position.y+cam.position.z))cam.position.copy(WK.tcam.p);const k2=Math.min(1,dt*2.5);cam.position.lerp(WK.tcam.p,k2);WK.tl.lerp(WK.tcam.t,k2);
    if(WK.inside>=0){const [x1,y1,x2,y2]=PROD[WK.inside].b,mm=.4;cam.position.x=Math.max(wx(x1)+mm,Math.min(wx(x2)-mm,cam.position.x));cam.position.z=Math.max(wz(y1)+mm,Math.min(wz(y2)-mm,cam.position.z));cam.position.y=Math.min(5.6,cam.position.y);}
    camHit();cam.lookAt(WK.tl);const v=WK.tl.clone().sub(cam.position);WK.yaw=Math.atan2(-v.x,-v.z);WK.pitch=Math.atan2(v.y,Math.hypot(v.x,v.z));}
-  else{const d=WK.dist,fx=-Math.sin(WK.yaw),fz=-Math.cos(WK.yaw),back=d*.9,cy=1.7+d*.34;cam.position.set(WK.pos.x-fx*back,cy,WK.pos.z-fz*back);
+  else{const d=WK.dist,fx=-Math.sin(WK.yaw),fz=-Math.cos(WK.yaw),back=d*.9,cy=WK.pos.y+1.7+d*.34;cam.position.set(WK.pos.x-fx*back,cy,WK.pos.z-fz*back);
    if(WK.inside>=0){const [x1,y1,x2,y2]=PROD[WK.inside].b,m=.35;cam.position.x=Math.max(wx(x1)+m,Math.min(wx(x2)-m,cam.position.x));cam.position.z=Math.max(wz(y1)+m,Math.min(wz(y2)-m,cam.position.z));cam.position.y=Math.min(5.7,cam.position.y);}
    camHit();const ah=back+5;cam.lookAt(WK.pos.x+fx*5,Math.max(-4,Math.min(12,cy+Math.tan(WK.pitch)*ah)),WK.pos.z+fz*5);}
   return true;};
